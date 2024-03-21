@@ -1,0 +1,15 @@
+/* global helper function in tailwind css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+@layer components{
+
+    .navbar-pop{
+        @apply absolute p-2 m-2  flex flex-col justify-between right-10 top-14 h-screen-200 miphone:w-screen
+         rounded-md shadow-md text-black bg-white text-[20px]
+         transition-all duration-200  origin-right ;
+    }
+} */
