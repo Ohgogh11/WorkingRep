@@ -8,7 +8,7 @@ function NavLinks({className =''}) {
         <nav className=" text-lg">
           <ul className="flex gap-5 content-center h-full items-center">
             <li className="">
-              <Link to='/Appointments' className="">Product</Link>
+              <Link to='/ScheduleAppointments' className="">Product</Link>
             </li>
             <li className="">
               <Link to='/Store' className="">Solution</Link>
