@@ -1,8 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import router from './routes/router.js'; // Assuming router.js is your router file
-
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const loginRouter = require('./routes/loginRouter');
 
 const app = express();
 
@@ -16,7 +15,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use('/', router);
+app.use('/api/login', loginRouter);
 
 const PORT = 5000;
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}`) });

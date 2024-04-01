@@ -100,3 +100,8 @@ CREATE TABLE DefaultHolidayHours(
 -- @block
 ALTER TABLE breaks
 MODIFY COLUMN day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+
+-- @block
+UPDATE Users
+SET user_password = '$2b$10$b48sfIDEMhSzWxmF1DI7zetg.2SX24TnIYInNSKoOvMvUpqF0vAim'
+WHERE user_id = 1;
