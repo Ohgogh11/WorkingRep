@@ -22,7 +22,6 @@ async function getUserByEmail(email) {
 
 async function comparePasswords(user, password) {
 
-    bcrypt.genSalt
     try {
         const validPassword = await bcrypt.compare(password, user.user_password);
         console.log(validPassword);
@@ -31,6 +30,10 @@ async function comparePasswords(user, password) {
         console.error(err);
         throw err; // Re-throw the error for handling in the route
     }
+}
+
+async function addNewUser(email,first_name,last_name,phone_number,password, premission = 'regualr'){
+    
 }
 
 module.exports = {

@@ -7,16 +7,17 @@ import axios from 'axios'; // For making HTTP requests
 function Login() {
   const navigate = useNavigate();
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [password, setPassword] = useState('');
   const [email,setEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
+  const isEmpty = str => !str || !str.trim();
 
   const handleSubmit  = async (event) => {
     event.preventDefault();
 
-    if (!email || !password){
+    if (isEmpty(email) || isEmpty(password)){
       setErrorMessage('Unfilled Email or Password field');
       setShowError(true);
       return;

@@ -14,8 +14,7 @@ const dontShowNav = ['/Login', '/Signup'];// add more paths to not show navigati
 const App = () => {
   return (
     <BrowserRouter>
-    <NavBar2/>
-      {/* <NavBarControlled /> */}
+      <NavBarControlled />
       <Routes>
         <Route index element={<HomePage />} />
         <Route path='/' element={<HomePage />} />
@@ -37,7 +36,7 @@ const NavBarControlled = () => {
     setShowNavBar( !dontShowNav.includes(location.pathname));
   }, [location]);
 
-  return showNavBar ? <NavBar /> : null;
+  return showNavBar ? <NavBar2 /> : null;
 };
 
 export default App;
