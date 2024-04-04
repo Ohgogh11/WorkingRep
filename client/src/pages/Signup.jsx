@@ -33,7 +33,7 @@ function Signup() {
     }
 
     setIsSigningIn(true);
-
+    //http://localhost:5000/api/signup
     try {
       const response = await axios.post('http://localhost:5000/api/signup', { email, first_name, last_name, phone_number, password });
       console.log('Login successful:', response.data);

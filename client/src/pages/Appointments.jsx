@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 function Appointments() {
   const [expandedSection, setExpandedSection] = useState(null);
   const maxSelectableDate = dayjs().add(1, 'month').endOf('month');
-  
+
   const handleSectionToggle = (section) => {
     if (expandedSection === section) {
       setExpandedSection(null); // Collapse if already expanded
@@ -22,8 +22,8 @@ function Appointments() {
   };
 
   return (
-    <div className="px-3 py-8 flex flex-col gap-4">
-      <div className={`section p-3  bg-gray-500 shadow-md rounded-xl ${expandedSection === "where" ? "expanded" : ""}`} onClick={() => handleSectionToggle("where")}>
+    <div className="px-3 py-8 flex flex-col items-center gap-4">
+      <div className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl ${expandedSection === "where" ? "expanded" : ""}`} onClick={() => handleSectionToggle("where")}>
         {expandedSection !== "where" && <h3 className="section-title">Select Barber</h3>}
         {expandedSection === "where" && (
           <div className="section-content" onClick={handleContentClick}>
@@ -37,8 +37,13 @@ function Appointments() {
           </div>
         )}
       </div>
-      <div className={`section p-3  bg-gray-500 shadow-md rounded-xl ${expandedSection === "when" ? "expanded" : ""}`} onClick={() => handleSectionToggle("when")}>
-        {expandedSection !== "when" && <h3 className="section-title">When</h3>}
+      <div className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl ${expandedSection === "when" ? "expanded" : ""}`} onClick={() => handleSectionToggle("when")}>
+        {expandedSection !== "when" &&
+          <h3 className="section-title">
+            When
+          </h3>
+        }
+
         {expandedSection === "when" && (
           <div className="section-content" onClick={handleContentClick}>
             <p className="section-label">When's your trip?</p>
@@ -52,7 +57,7 @@ function Appointments() {
           </div>
         )}
       </div>
-      <div className={`section p-3  bg-gray-500 shadow-md rounded-xl ${expandedSection === "who" ? "expanded" : ""}`} onClick={() => handleSectionToggle("who")}>
+      <div className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl ${expandedSection === "who" ? "expanded" : ""}`} onClick={() => handleSectionToggle("who")}>
         {expandedSection !== "who" && <h3 className="section-title">Who</h3>}
         {expandedSection === "who" && (
           <div className="section-content" onClick={handleContentClick}>
@@ -61,7 +66,7 @@ function Appointments() {
           </div>
         )}
       </div>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded w-full mt-4">
+      <button className="bg-blue-500 hover:bg-blue-600 w-[clamp(350px,90%,500px)] text-white font-semibold px-4 py-2 rounded mt-4">
         Search
       </button>
     </div>

@@ -23,7 +23,7 @@ function Navbar2() {
         {/* DynamicNav */}
         <div className="DynamicNav hidden mlg:flex items-center px-10">
           <div className="flex flex-grow">
-            <LinkBtn to="/login" content="Sign in" className='border border-white rounded-md p-1' />
+            <LinkBtn to="/Login" content="Sign in" className='border border-white rounded-md p-1' />
           </div>
           <Icon className=" absolute left-1/2 -translate-x-1/2" />
           <div className="flex justify-end flex-grow ">
