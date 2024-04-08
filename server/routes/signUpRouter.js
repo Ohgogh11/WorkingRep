@@ -3,9 +3,6 @@ const signupRouter = express.Router();
 const {getUserByEmail,insertUser, doesUserExist} = require('../databaseWork');
 
 
-
-
-
 signupRouter.get('/' ,async (req,res) =>{
     console.log('entered get ')
     res.json(await getUserByEmail('itay.fridburg@gmail.com'));

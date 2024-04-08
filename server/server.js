@@ -19,7 +19,10 @@ app.use(cors(corsOptions));
 
 app.use('/api/login', loginRouter);
 app.use('/api/images',express.static(path.join(__dirname,'images'))); 
-
 app.use('/api/signup', signupRouter);
+
+
+
+
 const PORT = 5000;
 app.listen(PORT, () => { console.log(`Server is running on port ${PORT}`) });

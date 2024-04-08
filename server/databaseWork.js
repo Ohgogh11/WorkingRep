@@ -14,14 +14,13 @@ const pool = require('./db');
 function getUserByEmail(email) {
     return new Promise(async (resolve, reject) => {
         try {
-            const [rows] = await pool.query('SELECT * FROM User WHERE email = ?', [email]);
+            const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
             resolve(rows.length > 0 ? rows[0] : null);
         } catch (error) {
             reject(error);
         }
     });
 }
-
 
 // async function comparePasswords(user, password) {
 //     try {
@@ -33,8 +32,6 @@ function getUserByEmail(email) {
 //         throw err; // Re-throw the error for handling in the route
 //     }
 // }
-
-
 
 function comparePasswords(user, password) {
     return new Promise(async (resolve, reject) => {
@@ -50,7 +47,7 @@ function comparePasswords(user, password) {
 function doesUserExist(email, phoneNumber) {
     return new Promise(async (resolve, reject) => {
         try {
-            const [rows] = await pool.query('SELECT COUNT(*) AS user_count FROM User WHERE email = ? OR phone_number = ?', [email, phoneNumber]);
+            const [rows] = await pool.query('SELECT COUNT(*) AS user_count FROM Users WHERE email = ? OR phone_number = ?', [email, phoneNumber]);
             resolve(rows[0].user_count > 0);
         } catch (error) {
             reject(error);
@@ -62,7 +59,7 @@ function doesUserExist(email, phoneNumber) {
 async function insertUser(email, first_name, last_name, phone_number, password, permission = 'regular') {
     try {
         const hashedPassword = await bcrypt.hash(password, 10); // Hash password with cost factor 10
-        const [result] = await pool.query('INSERT INTO User (email, phone_number, first_name, last_name, user_password, permission) VALUES (?, ?, ?, ?, ?, ?)', [email, phone_number, first_name, last_name, hashedPassword, permission]);
+        const [result] = await pool.query('INSERT INTO Users (email, phone_number, first_name, last_name, user_password, permission) VALUES (?, ?, ?, ?, ?, ?)', [email, phone_number, first_name, last_name, hashedPassword, permission]);
         return result.insertId;
     } catch (error) {
         throw error;
