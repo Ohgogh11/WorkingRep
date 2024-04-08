@@ -41,7 +41,7 @@ const NavBarControlled = () => {
     setShowNavBar(!dontShowNav.includes(location.pathname));
   }, [location]);
 
-  return showNavBar ? <NavBar /> : null;
+  return showNavBar ? <NavBar2 /> : null;
 };
 
 export default App;
