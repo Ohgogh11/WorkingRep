@@ -34,6 +34,20 @@
             "database": "alphman",
             "username": "root",
             "password": "Ohgogh5512"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "test2",
+            "database": "ALPHAMAN",
+            "username": "root",
+            "password": "Ohgogh5512"
         }
     ]
 }

@@ -1,13 +1,13 @@
 const express = require('express');
 const signupRouter = express.Router();
-const {getUserByEmail,insertUser, doesUserExist} = require('../databaseWork');
+const {getUserByEmail,insertUser, doesUserExist,getUserById} = require('../databaseWork');
 
 
-signupRouter.get('/' ,async (req,res) =>{
-    console.log('entered get ')
-    res.json(await getUserByEmail('itay.fridburg@gmail.com'));
-    console.log('finished');
-});
+// signupRouter.get('/' ,async (req,res) =>{
+//     console.log('entered get ')
+//     res.json(await getUserByEmail('itay.fridburg@gmail.com'));
+//     console.log('finished');
+// });
 
 
 signupRouter.post('/' , async (req,res) => {
@@ -28,7 +28,9 @@ signupRouter.post('/' , async (req,res) => {
   
       // Hash password before insertion
       const userId = await insertUser(email, first_name, last_name, phone_number, password, permission);
-      res.json({ message: 'User created successfully!', userId });
+      const user = await getUserById(userId);
+
+      res.json(user); // sends the user so it will log in and have the user in local storage 
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error creating user' });

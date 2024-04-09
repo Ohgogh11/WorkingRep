@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const pool = require('./db');
-
+const { deleteProductImage } = require('./UploadProductImage');
 // async function getUserByEmail(email) {
 //     try {
 //         const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
@@ -15,6 +15,17 @@ function getUserByEmail(email) {
     return new Promise(async (resolve, reject) => {
         try {
             const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
+            resolve(rows.length > 0 ? rows[0] : null);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+function getUserById(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [rows] = await pool.query('SELECT * FROM Users WHERE user_id = ?', [id]);
             resolve(rows.length > 0 ? rows[0] : null);
         } catch (error) {
             reject(error);
@@ -66,9 +77,63 @@ async function insertUser(email, first_name, last_name, phone_number, password, 
     }
 }
 
+function getProducts() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [rows] = await pool.query('SELECT * FROM products');
+            resolve(rows.length > 0 ? rows[0] : null);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+function insertProduct(product_name, product_description, price, stock_quantity, imageUrl) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [result] = pool.query('INSERT INTO products (product_name, product_description, price, stock_quantity, image_url) VALUES (?,?,?,?,?)', [product_name, product_description, parseFloat(price), stock_quantity, imageUrl]);
+            resolve(result);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+async function deleteImageFromDB(productId) {
+    try {
+        const [imageUrlResult] = await pool.query('SELECT image_url FROM products WHERE product_id = ?', [productId]);
+        const imageUrl = imageUrlResult[0]?.image_url; // Accessing the first row's 'image_url' property
+
+        // If you want to extract the filename from the URL
+        const imageUrlParts = (imageUrl.toString()).split('/');
+        const filename = imageUrlParts[imageUrlParts.length - 1];
+        await deleteProductImage(filename);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+async function deleteProductFromDB(productId) {
+   console.log( await deleteImageFromDB(productId));
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await pool.query('DELETE FROM products WHERE product_id = ?', [productId])
+            resolve(result)
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
+
 module.exports = {
     getUserByEmail,
     comparePasswords,
     insertUser,
     doesUserExist,
+    getUserById,
+    getProducts,
+    insertProduct,
+    deleteProductFromDB,
 };

@@ -28,7 +28,9 @@ loginRouter.post('/', async (req, res) => {
       // TODO Login successful (replace with JWT generation or session logic)
       // TODO ... (e.g., generate JWT using a secret key)
   
-      res.send({ message: 'Login successful!' }); // Replace with relevant response data
+
+
+      res.json(user); // TODO need to change after with JWT for now just sends the user itself as a json object
     } catch (err) {
       console.error(err);
       res.status(500).send('Server error');
