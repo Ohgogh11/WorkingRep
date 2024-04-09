@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Skeleton from '../Components/skeleton'
-import ProductList from '../Components/productClass';
+import ProductList from '../Components/ProductList';
+// import Skeleton from '../Components/skeleton'
 
 function Store() {
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
   //   // ! Simulate fetching products from backend

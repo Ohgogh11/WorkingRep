@@ -9,7 +9,7 @@ const Store = lazy(() => import('./pages/Store'));
 const Appointments = lazy(() => import('./pages/Appointments'));
 const Signup = lazy(() => import('./pages/Signup'));
 const NoPage = lazy(() => import('./pages/NoPage'));
-
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
 
 const dontShowNav = ['/Login', '/Signup'];// add more paths to not show navigation bar in them
 
@@ -25,7 +25,7 @@ const App = () => {
           <Route path='/Signup' element={<Signup />} />
           <Route path='/Store' element={<Store />} />
           <Route path='/ScheduleAppointments' element={<Appointments />} />
-          {/* //TODO need to add Product page for a page with id /product:{productID} */}
+          <Route path='/products/:productId' element={<ProductDetailPage/>} />
           <Route path='*' element={<NoPage />} />
         </Routes>
       </Suspense>
