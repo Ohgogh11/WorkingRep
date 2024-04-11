@@ -10,6 +10,26 @@ const { deleteProductImage } = require('./UploadProductImage');
 //         throw err; // Re-throw the error for handling in the route
 //     }
 // }
+function insertToWishList(userId, productId) {
+    return new Promise((resolve, reject) => {
+        try {
+            const [rows] = pool.query('INSERT INTO wishList (user_id,product_id) VALUES (?,?)', [userId, productId]);
+            resolve(rows.affectedRows);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+function deleteWishList(userId, productId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [rows] = await pool.query('DELETE FROM wishlist WHERE user_id = ? AND product_id = ?',[userId, productId])
+            resolve(rows.affectedRows);
+        } catch (error) {
+            reject(error)
+        }
+    });
+}
 
 function getUserByEmail(email) {
     return new Promise(async (resolve, reject) => {
@@ -66,6 +86,17 @@ function doesUserExist(email, phoneNumber) {
     });
 }
 
+function doesProductExists(productId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [rows] = await pool.query('SELECT COUNT(*) AS product_count FROM products WHERE product_id = ? ', [productId]);
+            resolve(rows[0].product_count > 0);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
 // Function to insert user (with password hashing)
 async function insertUser(email, first_name, last_name, phone_number, password, permission = 'regular') {
     try {
@@ -91,8 +122,8 @@ function getProducts() {
 function insertProduct(product_name, product_description, price, stock_quantity, imageUrl) {
     return new Promise(async (resolve, reject) => {
         try {
-            const [result] = pool.query('INSERT INTO products (product_name, product_description, price, stock_quantity, image_url) VALUES (?,?,?,?,?)', [product_name, product_description, parseFloat(price), stock_quantity, imageUrl]);
-            resolve(result);
+            const [rows] = pool.query('INSERT INTO products (product_name, product_description, price, stock_quantity, image_url) VALUES (?,?,?,?,?)', [product_name, product_description, parseFloat(price), stock_quantity, imageUrl]);
+            resolve(rows.affectedRows);
         } catch (error) {
             reject(error);
         }
@@ -115,12 +146,12 @@ async function deleteImageFromDB(productId) {
 
 
 async function deleteProductFromDB(productId) {
-   console.log( await deleteImageFromDB(productId));
+    console.log(await deleteImageFromDB(productId));
 
     return new Promise(async (resolve, reject) => {
         try {
-            const result = await pool.query('DELETE FROM products WHERE product_id = ?', [productId])
-            resolve(result)
+            const [rows] = await pool.query('DELETE FROM products WHERE product_id = ?', [productId])
+            resolve(rows.affectedRows);
         } catch (error) {
             reject(error)
         }
@@ -136,4 +167,7 @@ module.exports = {
     getProducts,
     insertProduct,
     deleteProductFromDB,
+    insertToWishList,
+    deleteWishList,
+    doesProductExists,
 };
