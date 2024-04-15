@@ -38,7 +38,6 @@ export default class ProductList extends Component {
                     <img src={product.image} alt="" />
                     <h2 className="text-lg font-semibold">
                         {product.title}
-                        {console.log(product)}
                     </h2>
                     {/* Add more product details here */}
                 </Link>

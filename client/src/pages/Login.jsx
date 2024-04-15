@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiFillGithub } from 'react-icons/ai';
 import axios from 'axios'; // For making HTTP requests
-
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 function Login() {
   const navigate = useNavigate();
@@ -10,25 +10,40 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [password, setPassword] = useState('');
-  const [email,setEmail] = useState('');
+  const [email, setEmail] = useState('');
+  const signIn = useSignIn();
 
   const isEmpty = str => !str || !str.trim();
 
-  const handleSubmit  = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (isEmpty(email) || isEmpty(password)){
+    if (isEmpty(email) || isEmpty(password)) {
       setErrorMessage('Unfilled Email or Password field');
       setShowError(true);
       return;
     }
-    console.log(email, password);
-    
+
     setIsSigningIn(true);
     try {
       const response = await axios.post('http://localhost:5000/api/login', { email, password });
-      console.log('Login successful:', response.data);
-  
+      console.log('Login successful:', response.data);//! delete after
+
+      if (signIn({
+        auth: {
+          token: response.data.token,
+        },
+        userState: {
+          email: email,
+        }
+      })){
+        console.log('Signing in successful');
+      }
+      else{
+        console.log('error')
+      }
+            
+      navigate('/') // navigate to the home page
       // TODO: add error message
     } catch (error) {
       if (error.response && error.response.data) {
@@ -37,15 +52,15 @@ function Login() {
         setErrorMessage('Network error');
       }
     }
-    finally{
+    finally {
       setIsSigningIn(false);
     }
   };
 
-  const dismissError = () =>{
+  const dismissError = () => {
     setShowError(false);
   }
-  
+
   return (
     <form onSubmit={handleSubmit} className='flex-col h-screen text-sm bg-[#161b22] text-[#f0f6fc]'>
       <div className='flex justify-center pt-20 pb-6'>
@@ -69,30 +84,30 @@ function Login() {
             <label htmlFor="Email_field">
               Email Address
             </label>
-            <input type="text" name="Email" id="Email_field" onChange={(e)=> setEmail(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
+            <input type="text" name="Email" id="Email_field" onChange={(e) => setEmail(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
             {/* password_field */}
-            <label htmlFor="password_field"  className='flex justify-between'>
+            <label htmlFor="password_field" className='flex justify-between'>
               Password
               <Link to='/password_reset' className=' text-xs text-[#2f81f7]'>Forgot password?</Link>
             </label>
-            <input type="password" name="password" id="password_field" onChange={(e)=> setPassword(e.target.value)} className=' bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700' />
-            <input type="submit" id='submit' disabled={isSigningIn} value={ isSigningIn ? "Signing in..." : "Sign In"} className={`w-full ${isSigningIn ? "bg-green-900 border border-green-900":"bg-green-700 border border-green-700 cursor-pointer"} px-4 py-1 rounded-md mt-2 `} />
+            <input type="password" name="password" id="password_field" onChange={(e) => setPassword(e.target.value)} className=' bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700' />
+            <input type="submit" id='submit' disabled={isSigningIn} value={isSigningIn ? "Signing in..." : "Sign In"} className={`w-full ${isSigningIn ? "bg-green-900 border border-green-900" : "bg-green-700 border border-green-700 cursor-pointer"} px-4 py-1 rounded-md mt-2 `} />
             {/* divider */}
             <div name='divider' className='mt-4 flex justify-between items-center'>
-              <div className=' relative inline-block w-1/2 h-[1px] align-middle bg-[#30363d]'/>
+              <div className=' relative inline-block w-1/2 h-[1px] align-middle bg-[#30363d]' />
               <span className=' px-1'>Or</span>
-              <div className=' relative inline-block w-1/2 h-[1px] align-middle bg-[#30363d]'/>
+              <div className=' relative inline-block w-1/2 h-[1px] align-middle bg-[#30363d]' />
             </div>
             {/* other sign in option */}
             <div name='other sign in' className='flex justify-evenly mt-4 text-2xl'>
               <button type='button' className=' flex items-center '>
-                <ion-icon name='logo-google'/>
+                <ion-icon name='logo-google' />
               </button>
               <button type='button' className=' flex items-center '>
-                <ion-icon name='logo-twitter'/>
+                <ion-icon name='logo-twitter' />
               </button>
               <button type='button' className=' flex items-center '>
-                <ion-icon name='logo-apple'/>
+                <ion-icon name='logo-apple' />
               </button>
             </div>
           </div>
