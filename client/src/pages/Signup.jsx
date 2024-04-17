@@ -79,32 +79,32 @@ function Signup() {
             <label htmlFor="FirstName_field">
               First Name
             </label>
-            <input type="text" name="login" id="FirstName_field" onChange={(e) => setFirstName(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
+            <input required={true} type="text" name="login" id="FirstName_field" onChange={(e) => setFirstName(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
              {/* LastName_field */}
             <label htmlFor="lastName_field">
               last Name
             </label>
-            <input type="text" name="login" id="lastName_field" onChange={(e) => setLastName(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
+            <input required={true} type="text" name="login" id="lastName_field" onChange={(e) => setLastName(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
             {/*email_field */}
             <label htmlFor="email_field">
               Email address
             </label>
-            <input type="email" name="login" id="email_field" onChange={(e) => setEmail(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
+            <input required={true} type="email" name="login" id="email_field" onChange={(e) => setEmail(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
             {/* phoneNumber_field */}
             <label htmlFor="phoneNumber_field">
               Phone Number
             </label>
-            <input type='tel' name="login" id="phoneNumber_field" onChange={(e) => setPhoneNumber(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
+            <input required={true} type='tel' name="login" id="phoneNumber_field" onChange={(e) => setPhoneNumber(e.target.value)} className='bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700 focus:border-red-700' />
             {/* password_field */}
             <label htmlFor="password_field" className='flex justify-between'>
               Password
             </label>
-            <input type="password" name="password" id="password_field" onChange={(e) => setPassword(e.target.value)} className=' bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700' />
+            <input required={true} type="password" name="password" id="password_field" onChange={(e) => setPassword(e.target.value)} className=' bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700' />
             {/* confirmPassword_field */}
             <label htmlFor="password_field" className='flex justify-between'>
               Confirm Password
             </label>
-            <input type="password" name="confirmPassword" id="confirmPassword_field" onChange={(e) => setConfirmPassword(e.target.value)} className=' bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700' />
+            <input required={true} type="password" name="confirmPassword" id="confirmPassword_field" onChange={(e) => setConfirmPassword(e.target.value)} className=' bg-transparent w-full px-3 py-1 mt-1 mb-4 rounded-md border border-gray-700' />
             <input type="submit" id='submit' disabled={isSigningIn} value={isSigningIn ? "Signing Up..." : "Sign Up"} className={`w-full ${isSigningIn ? "bg-green-900 border border-green-900" : "bg-green-700 border border-green-700 cursor-pointer"} px-4 py-1 rounded-md mt-2 `} />
             {/* divider */}
             <div name='divider' className='mt-4 flex justify-between items-center'>

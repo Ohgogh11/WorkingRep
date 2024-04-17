@@ -3,7 +3,6 @@ import React from 'react';
 
 function IsSignedIn({ logged, notLogged }) {
     const isAuthenticated = useIsAuthenticated();
-    console.log(isAuthenticated);
     return (
             isAuthenticated === true ? logged : notLogged
     );

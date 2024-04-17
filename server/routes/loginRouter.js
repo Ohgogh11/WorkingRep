@@ -1,42 +1,49 @@
-const express = require('express');
+const express = require("express");
 const loginRouter = express.Router();
-const { getUserByEmail, comparePasswords } = require('../databaseWork')
-const jwt = require('jsonwebtoken');
+const { getUserByEmail, comparePasswords } = require("../databaseWork");
+const jwt = require("jsonwebtoken");
 
-//login request handler 
+//login request handler
 
-
-loginRouter.post('/', async (req, res) => {
+loginRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
   // Validation (add more validation if needed)
   if (!email || !password) {
-    return res.status(400).send('Email and password are required');
+    return res.status(400).send("Email and password are required");
   }
 
   try {
     const user = await getUserByEmail(email);
-
     if (!user) {
-      return res.status(401).send('Invalid credentials'); // Unauthorized
+      return res.status(401).send("Invalid credentials"); // Unauthorized
     }
 
     const passwordMatch = await comparePasswords(user, password);
     if (!passwordMatch) {
-      return res.status(401).send('Invalid credentials');
+      return res.status(401).send("Invalid credentials");
     }
 
     // TODO Login successful (replace with JWT generation or session logic)
     // TODO ... (e.g., generate JWT using a secret key)
     const jwtToken = jwt.sign(
-      { id: user.user_id, email: user.email, phoneNumber: user.phone_number, permission: user.permission },
-      process.env.JWT_SECRET, { expiresIn: '2h' }
+      {
+        iss: "oauth",
+        sub: user.user_id,
+        exp: Math.floor(Date.now() / 1000) + 60 * 60, // Expires in 1 hour
+        iat: Math.floor(Date.now() / 1000), // Issued at current time
+        // more user details
+        email: user.email,
+        phone_number: user.phone_number,
+        role: user.permission,
+      },
+      process.env.JWT_SECRET
     );
 
-
-    res.json({ token: jwtToken }); // TODO need to change after with JWT for now just sends the user itself as a json object
+    // TODO: need to implement refresh token
+    res.json({ token: jwtToken });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
