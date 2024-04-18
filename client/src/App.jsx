@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./pages/Home";
 import NavBar2 from "./Components/NavBar2/NavBar2"; // Import your NavBar component
+import Loading from "./pages/Loading";
 import "./globals.css";
 
 import AuthProvider from "react-auth-kit";
@@ -22,15 +23,15 @@ const Appointments = lazy(() => import("./pages/Appointments"));
 const Signup = lazy(() => import("./pages/Signup"));
 const NoPage = lazy(() => import("./pages/NoPage"));
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
-
-const dontShowNav = ["/login", "/signup", ]; // add more paths to not show navigation bar in them
+const TokenGenerationPage = lazy(() => import("./pages/TokenGenerationPage"));
+const dontShowNav = ["/login", "/signup"]; // add more paths to not show navigation bar in them
 
 const App = () => {
   return (
     <AuthProvider store={store}>
       <BrowserRouter>
         <NavBarControlled />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <Routes>
             <Route index element={<HomePage />} />
             <Route path="/" element={<HomePage />} />
@@ -45,6 +46,10 @@ const App = () => {
               <Route path="/ScheduleAppointments" element={<Appointments />} />
               <Route element={<AdminOutlet />}>
                 <Route path="/admin" element={<div>admin</div>} />
+                <Route
+                  path="/admin/AdminLink"
+                  element={<TokenGenerationPage />}
+                />
               </Route>
             </Route>
             <Route path="*" element={<NoPage />} />
