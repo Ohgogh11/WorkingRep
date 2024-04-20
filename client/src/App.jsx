@@ -9,6 +9,7 @@ import AuthProvider from "react-auth-kit";
 import createStore from "react-auth-kit/createStore";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import AdminOutlet from "./Components/AdminOutLet";
+import CreateProduct from "./pages/CreateProduct";
 // for authProvider
 const store = createStore({
   authType: "cookie",
@@ -49,6 +50,10 @@ const App = () => {
                 <Route
                   path="/admin/AdminLink"
                   element={<TokenGenerationPage />}
+                />
+                <Route
+                  path="/admin/Create-New-Page"
+                  element={<CreateProduct />}
                 />
               </Route>
             </Route>

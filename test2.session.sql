@@ -24,3 +24,21 @@ VALUES (
     100,
     'http://localhost:5000/api/images/image_1.jpg'
   );
+
+  -- @block
+  INSERT INTO products (
+      product_id,
+      product_name,
+      product_description,
+      price,
+      stock_quantity,
+      image_url
+    )
+  VALUES (
+      product_id:int,
+      'product_name:varchar',
+      'product_description:text',
+      'price:decimal',
+      stock_quantity:int,
+      'image_url:varchar'
+    );
