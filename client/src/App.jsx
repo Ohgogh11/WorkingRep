@@ -1,7 +1,9 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import HomePage from "./pages/Home";
-import NavBar2 from "./Components/NavBar2/NavBar2"; // Import your NavBar component
+import NavBar from "./Components/NavBar/NavBar"; // Import your NavBar component
 import Loading from "./pages/Loading";
 import "./globals.css";
 
@@ -10,6 +12,9 @@ import createStore from "react-auth-kit/createStore";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import AdminOutlet from "./Components/AdminOutLet";
 import CreateProduct from "./pages/CreateProduct";
+import CreateBarber from "./pages/CreateBarber";
+
+// import Appointments from "./pages/Appointments"; //! delete after testing
 // for authProvider
 const store = createStore({
   authType: "cookie",
@@ -17,6 +22,8 @@ const store = createStore({
   cookieDomain: window.location.hostname,
   cookieSecure: false,
 });
+// react-query
+const queryClient = new QueryClient();
 
 const Login = lazy(() => import("./pages/Login"));
 const Store = lazy(() => import("./pages/Store"));
@@ -31,35 +38,42 @@ const App = () => {
   return (
     <AuthProvider store={store}>
       <BrowserRouter>
-        <NavBarControlled />
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route index element={<HomePage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="/Store" element={<Store />} />
-            <Route
-              path="/products/:productId"
-              element={<ProductDetailPage />}
-            />
-            <Route element={<AuthOutlet fallbackPath="/Login" />}>
-              <Route path="/ScheduleAppointments" element={<Appointments />} />
-              <Route element={<AdminOutlet />}>
-                <Route path="/admin" element={<div>admin</div>} />
+        <QueryClientProvider client={queryClient}>
+          <NavBarControlled />
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route index element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/Signup" element={<Signup />} />
+              <Route path="/Store" element={<Store />} />
+              <Route path="/New-Barber?" element={<CreateBarber />} />
+              <Route
+                path="/products/:productId"
+                element={<ProductDetailPage />}
+              />
+              <Route element={<AuthOutlet fallbackPath="/Login" />}>
                 <Route
-                  path="/admin/AdminLink"
-                  element={<TokenGenerationPage />}
+                  path="/ScheduleAppointments"
+                  element={<Appointments />}
                 />
-                <Route
-                  path="/admin/Create-New-Page"
-                  element={<CreateProduct />}
-                />
+                <Route element={<AdminOutlet />}>
+                  <Route path="/admin" element={<div>admin</div>} />
+                  <Route
+                    path="/admin/barberLink"
+                    element={<TokenGenerationPage />}
+                  />
+                  <Route
+                    path="/admin/Create-New-Product"
+                    element={<CreateProduct />}
+                  />
+                </Route>
               </Route>
-            </Route>
-            <Route path="*" element={<NoPage />} />
-          </Routes>
-        </Suspense>
+              <Route path="*" element={<NoPage />} />
+            </Routes>
+          </Suspense>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
       </BrowserRouter>
     </AuthProvider>
   );
@@ -73,7 +87,7 @@ const NavBarControlled = () => {
     setShowNavBar(!dontShowNav.includes(location.pathname.toLowerCase()));
   }, [location]);
 
-  return showNavBar ? <NavBar2 /> : null;
+  return showNavBar ? <NavBar /> : null;
 };
 
 export default App;

@@ -42,3 +42,42 @@ VALUES (
       stock_quantity:int,
       'image_url:varchar'
     );
+
+    -- @block
+    INSERT INTO appointments (
+        user_id,
+        user_id,
+        barber_id,
+        appointment_date,
+        appointment_time,
+        appointment_name,
+        status
+      )
+    VALUES (
+        user_id:int,
+        user_id:int,
+        barber_id:int,
+        'appointment_date:date',
+        'appointment_time:time',
+        'appointment_name:varchar',
+        'status:enum'
+      );
+
+
+
+      INSERT INTO barber_schedule (
+          day_of_week,
+          barber_id,
+          barber_id,
+          start_time,
+          end_time,
+          appointment_duration
+        )
+      VALUES (
+          'day_of_week:enum',
+          barber_id:int,
+          barber_id:int,
+          'start_time:time',
+          'end_time:time',
+          appointment_duration:int
+        );

@@ -1,8 +1,7 @@
 const express = require("express");
 const loginRouter = express.Router();
 const { getUserByEmail, comparePasswords } = require("../databaseWork");
-const jwt = require("jsonwebtoken");
-
+const { createJwtToken } = require("../JwtTokenWork");
 //login request handler
 
 loginRouter.post("/", async (req, res) => {
@@ -25,18 +24,17 @@ loginRouter.post("/", async (req, res) => {
 
     // TODO Login successful (replace with JWT generation or session logic)
     // TODO ... (e.g., generate JWT using a secret key)
-    const jwtToken = jwt.sign(
+
+    const jwtToken = createJwtToken(
       {
-        iss: "oauth",
-        sub: user.user_id,
-        exp: Math.floor(Date.now() / 1000) + 60 * 60, // Expires in 1 hour
-        iat: Math.floor(Date.now() / 1000), // Issued at current time
-        // more user details
+        userID: user.user_id,
         email: user.email,
         phone_number: user.phone_number,
         role: user.permission,
+        firstName: user.first_name,
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      "1h"
     );
 
     // TODO: need to implement refresh token

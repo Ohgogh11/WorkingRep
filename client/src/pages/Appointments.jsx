@@ -1,195 +1,88 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import axios from "axios";
-import BarbersComp from "../Components/BarbersComp";
-
-function ExpandableSection({ title, content, expanded, onToggle, State }) {
-  return (
-    <div
-      className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl cursor-pointer`}
-      onClick={onToggle}>
-      {expanded ? (
-        <div className="section-content" onClick={(e) => e.stopPropagation()}>
-          <p className="section-label">{title}</p>
-          {content}
-        </div>
-      ) : (
-        <div className="flex justify-between px-1">
-          <h3 className="section-title">{title}</h3>
-          <h3>{State}</h3>
-        </div>
-      )}
-    </div>
-  );
-}
+import React, { useState } from "react";
+import Stepper from "../Components/Stepper/Stepper";
+import StepperControl from "../Components/Stepper/StepperControl";
+import ServiceSelection from "../Components/steps/ServiceSelection";
+import BarberSelection from "../Components/steps/BarberSelection";
+import DateTimeSelection from "../Components/steps/DateTimeSelection";
+import Complete from "../Components/steps/Complete";
+import { StepperContext } from "../contexts/StepperContext";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 function Appointments() {
-  const [form, setForm] = useState({
-    Barber: "None",
-    Date: "currentDate",
-    Time: "Time",
+  const [formData, setFormData] = useState({
+    barbersName: "",
+    service: "",
+    date: "",
+    time: "",
   });
-  const [expandedSection, setExpandedSection] = useState(null);
-  const maxSelectableDate = useMemo(() =>
-    dayjs().add(1, "month").endOf("month")
-  );
-  const [availableBarbers, setAvailableBarbers] = useState([]);
-  //useState(async () => {
-  //   try {
-  //     // Make a request to fetch product details using the productId
-  //     const response = await fetch(`https://fakestoreapi.com/users`);
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch product");
-  //     }
-  //     const data = await response.json();
-  //     console.table(data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error fetching product:", error);
-  //     return null;
-  //   }
-  // });
+  const [currentStep, setCurrentStep] = useState(1);
+  const [finishedStep, setFinishedStep] = useState(false);
+  const headerAuth = useAuthHeader();
+  const authUser = useAuthUser();
 
-  useEffect(() => {
-    const fetchBarbers = async () => {
-      try {
-        const response = await axios.get("https://fakestoreapi.com/users"); // Use Axios.get
-        // console.table(response.data);
-        // response.data.map((user) => console.log(user.username));
-        setAvailableBarbers(response.data); // Update state after successful fetch
-      } catch (error) {
-        console.error("Error fetching barbers:", error);
-      }
-    };
+  const steps = ["בחירת ספר", "סוג השירות", "תאריך ושעה", "סיום ואישור"];
 
-    fetchBarbers(); // Call the function to fetch data on component mount
-  }, []); // Empty dependency array ensures the effect runs only once on mount
-
-  const handleSectionToggle = (section) => {
-    if (expandedSection === section) {
-      setExpandedSection(null); // Collapse if already expanded
-    } else {
-      setExpandedSection(section); // Expand if not expanded
+  const displaySteps = (step) => {
+    switch (step) {
+      case 1:
+        return <BarberSelection />;
+      case 2:
+        return <ServiceSelection />;
+      case 3:
+        return <DateTimeSelection />;
+      case 4:
+        return <Complete handleClick={handleClick} />;
     }
   };
 
-  const handleBarberSelect = (selectedBarber) => {
-    setForm((prevState) => ({ ...prevState, Barber: selectedBarber }));
+  const handleClick = (direction) => {
+    if (!finishedStep && direction) {
+      return;
+    }
+
+    let newStep = currentStep;
+    direction === "next" ? newStep++ : newStep--;
+    newStep > 0 &&
+      newStep <= steps.length &&
+      setCurrentStep((prev) => {
+        if (prev < newStep) {
+          setFinishedStep(false);
+        }
+        return newStep;
+      });
   };
 
   return (
-    <div className="px-3 py-8 flex flex-col items-center gap-4">
-      <ExpandableSection
-        title="Select Barber"
-        content={
-          <div className="grid grid-cols-3 gap-2 py-4 place-items-center">
-            {availableBarbers.map((barber) => (
-              <BarbersComp
-                key={barber.id}
-                barber={barber}
-                onSelect={handleBarberSelect}
-              />
-            ))}
+    <div className=" overflow-scroll  w-full h-Screen flex justify-center items-center">
+      <div className=" container border md:w-1/2  mx-auto shadow-xl rounded-2xl pb-2 bg-white">
+        <div className=" container horizontal mt-5">
+          <Stepper steps={steps} currentStep={currentStep} />
+          {/* display Components  */}
+          <div className="my-10 p-10 pt-0 mb-0 px-5">
+            <StepperContext.Provider
+              value={{
+                formData,
+                setFormData,
+                setFinishedStep,
+                headerAuth,
+                authUser,
+              }}>
+              {displaySteps(currentStep)}
+            </StepperContext.Provider>
           </div>
-        }
-        expanded={expandedSection === "Barber"}
-        onToggle={() => handleSectionToggle("Barber")} // Pass handleSectionToggle directly
-        State={form.Barber}
-      />
-      <ExpandableSection
-        title="Date"
-        content={
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
-              views={["day"]}
-              disablePast={true}
-              maxDate={maxSelectableDate}
-              onChange={(e) => {
-                setForm((prevState) => ({
-                  ...prevState,
-                  Date: dayjs(e).format("DD-MM"),
-                }));
-                console.log("date:" + dayjs(e).format("DD-MM")); //! delete
-              }}
-            />
-          </LocalizationProvider>
-        }
-        expanded={expandedSection === "Date"}
-        onToggle={() => handleSectionToggle("Date")} // Pass handleSectionToggle directly
-        State={form.Date}
-      />
-      <ExpandableSection
-        title="Time"
-        content={
-          <input
-            type="text"
-            className="section-input"
-            placeholder="Enter traveler's name"
+        </div>
+
+        {currentStep !== steps.length && (
+          <StepperControl
+            handleClick={handleClick}
+            currentStep={currentStep}
+            steps={steps}
           />
-        }
-        expanded={expandedSection === "Time"}
-        onToggle={() => handleSectionToggle("Time")} // Pass handleSectionToggle directly
-        State={form.Time}
-      />
-      <button className="bg-blue-500 hover:bg-blue-600 w-[clamp(350px,90%,500px)] text-white font-semibold px-4 py-2 rounded mt-4">
-        Search
-      </button>
+        )}
+      </div>
     </div>
   );
-
-  // return (
-  //   <div className="px-3 py-8 flex flex-col items-center gap-4">
-  //     <div className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl ${expandedSection === "where" ? "expanded" : ""}`} onClick={() => handleSectionToggle("where")}>
-  //       {expandedSection !== "where" && <h3 className="section-title">Select Barber</h3>}
-  //       {expandedSection === "where" && (
-  //         <div className="section-content" onClick={handleContentClick}>
-  //           <p className="section-label">Where to?</p>
-  //           <input type="text" className="section-input" placeholder="Enter destination" />
-  //           <div className="section-buttons">
-  //             <button className="section-button">Location 1</button>
-  //             <button className="section-button">Location 2</button>
-  //             <button className="section-button">Location 3</button>
-  //           </div>
-  //         </div>
-  //       )}
-  //     </div>
-  //     <div className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl ${expandedSection === "when" ? "expanded" : ""}`} onClick={() => handleSectionToggle("when")}>
-  //       {expandedSection !== "when" &&
-  //         <h3 className="section-title">
-  //           When
-  //         </h3>
-  //       }
-
-  //       {expandedSection === "when" && (
-  //         <div className="section-content" onClick={handleContentClick}>
-  //           <p className="section-label">When's your trip?</p>
-  //           <LocalizationProvider dateAdapter={AdapterDayjs}>
-  //             <DateCalendar
-  //               views={['day']} // Restrict to day view only
-  //               disablePast={true}
-  //               maxDate={maxSelectableDate}
-  //             />
-  //           </LocalizationProvider>
-  //         </div>
-  //       )}
-  //     </div>
-  //     <div className={`section p-3 w-[clamp(350px,90%,500px)] bg-gray-500 shadow-md rounded-xl ${expandedSection === "who" ? "expanded" : ""}`} onClick={() => handleSectionToggle("who")}>
-  //       {expandedSection !== "who" && <h3 className="section-title">Who</h3>}
-  //       {expandedSection === "who" && (
-  //         <div className="section-content" onClick={handleContentClick}>
-  //           <p className="section-label">Who's traveling?</p>
-  //           <input type="text" className="section-input" placeholder="Enter traveler's name" />
-  //         </div>
-  //       )}
-  //     </div>
-  //     <button className="bg-blue-500 hover:bg-blue-600 w-[clamp(350px,90%,500px)] text-white font-semibold px-4 py-2 rounded mt-4">
-  //       Search
-  //     </button>
-  //   </div>
-  // );
 }
 
 export default Appointments;

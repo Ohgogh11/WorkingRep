@@ -7,13 +7,17 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        rubik: ["Rubik", "sans-serif"],
+      },
       screens: {
         mlg: { max: "1025px" },
         msm: { max: "650px" },
+        mss: { max: "512px" },
       },
       height: {
         "screen-200": "calc(100vh - 200px)",
-        "full-Screen": "calc(100vh - 72px)",
+        "full-Screen": "calc(100vh - 88px)",
       },
       width: {
         "screen-60": "calc(100vh - 200px)",

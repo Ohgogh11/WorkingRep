@@ -8,7 +8,7 @@ function Store() {
       <h1 className="text-2xl font-bold mb-4">Products</h1>
       <div className=" flex justify-center py-5">
         <Link
-          to={"/admin/Create-New-Page"}
+          to={"/admin/Create-New-Product"}
           className="w-40 bg-green-500 border rounded-xl text-center">
           Add New Product
         </Link>

@@ -153,7 +153,12 @@ function CreateProduct() {
           />
         </div>
         {errorMessage && (
-          <p className="text-red-500 text-sm font-medium">{errorMessage}</p>
+          <>
+            <p className="text-red-500 text-sm font-medium">{errorMessage}</p>
+            <button onClick={setErrorMessage("")}>
+              <ion-icon name="close" />
+            </button>
+          </>
         )}
         <button
           type="submit"

@@ -1,53 +1,78 @@
 {
-    "cSpell.words": [
-        "Alphaman",
-        "Fridburg",
-        "Itay",
-        "Ohgogh",
-        "tailwindcss"
-    ],
-    "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "test",
-            "database": "alphaman",
-            "username": "root",
-            "password": "Ohgogh5512"
-        },
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "razesComputer",
-            "database": "alphman",
-            "username": "root",
-            "password": "Ohgogh5512"
-        },
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "test2",
-            "database": "ALPHAMAN",
-            "username": "root",
-            "password": "Ohgogh5512"
-        }
-    ]
+  "cSpell.words": [
+    "afik",
+    "Alphaman",
+    "Fridburg",
+    "Itay",
+    "Ohgogh",
+    "tailwindcss",
+    "tanstack",
+    "tiktok",
+    "להגיע",
+    "תרצו"
+  ],
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "test",
+      "database": "alphaman",
+      "username": "root",
+      "password": "Ohgogh5512"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "razesComputer",
+      "database": "alphman",
+      "username": "root",
+      "password": "Ohgogh5512"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "test2",
+      "database": "ALPHAMAN",
+      "username": "root",
+      "password": "Ohgogh5512"
+    }
+  ],
+  "cSpell.ignoreWords": [
+    "אשרו",
+    "בשעה",
+    "הזמנתכם",
+    "העסק",
+    "הערה",
+    "התהליך",
+    "התור",
+    "וודאו",
+    "ולחצו",
+    "וקביעת",
+    "לבעל",
+    "לגבי",
+    "להוסיף",
+    "לסיום",
+    "פרטי",
+    "שלכם",
+    "תוכלו",
+    "תקינית"
+  ]
 }

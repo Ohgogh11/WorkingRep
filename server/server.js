@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -7,10 +9,12 @@ const signupRouter = require("./routes/signUpRouter");
 const productRouter = require("./routes/productRouter");
 const wishlistRouter = require("./routes/wishlistRouter");
 const userBanListRouter = require("./routes/userBanListRouter");
+const barberTokenRouter = require("./routes/barberTokenRouter");
+const AppointmentRouter = require("./routes/AppointmentRouter");
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const corsOptions = {
   origin: "*",
@@ -32,16 +36,14 @@ function generateRandomString(length) {
   return result;
 }
 
-app.get("/api/AdminToken", (req, res) => {
-  res.status(200).json({ token: generateRandomString(10) });
-});
-
 app.use("/api/images", express.static(path.join(__dirname, "images")));
 app.use("/api/login", loginRouter);
 app.use("/api/signup", signupRouter);
+app.use("/api/Appointments", AppointmentRouter);
 app.use("/api/products", productRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/userBanListRouter", userBanListRouter);
+app.use("/api/admin/BarberToken", barberTokenRouter);
 
 const PORT = 5000;
 app.listen(PORT, () => {
