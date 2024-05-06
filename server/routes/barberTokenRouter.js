@@ -6,6 +6,12 @@ const {
   verifyBarberToken,
 } = require("../JwtTokenWork");
 
+/**
+ * Handles GET requests to "/BarberLink" endpoint to generate a token for admin access.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns JSON response with a link containing the generated token.
+ */
 barberTokenRouter.get("/BarberLink", verifyAccessesToken, (req, res) => {
   if (req.payload.role !== "admin") {
     return res.status(403).json({ message: "role must be admin" });

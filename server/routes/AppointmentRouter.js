@@ -11,6 +11,11 @@ const {
   insertAppointment,
 } = require("../databaseWork");
 
+/**
+ * Get the day of the week for a given date string.
+ * @param {string} dateString - The date string in a valid date format.
+ * @returns {string} The day of the week corresponding to the given date string.
+ */
 function getDayOfWeek(dateString) {
   // Create a new Date object using the dateString
   const date = new Date(dateString);
@@ -32,6 +37,12 @@ function getDayOfWeek(dateString) {
   return daysOfWeek[dayOfWeekIndex];
 }
 
+/**
+ * Route to get the list of available barbers for scheduling appointments.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves once the list of barbers is retrieved and sent as a JSON response.
+ */
 AppointmentRouter.get("/getBarbers", verifyAccessesToken, async (req, res) => {
   const canSchedule = await canScheduleAppointment(req.payload.userID);
   if (!canSchedule) {
@@ -45,6 +56,14 @@ AppointmentRouter.get("/getBarbers", verifyAccessesToken, async (req, res) => {
   }
 });
 
+/**
+ * Route to get services for a specific barber.
+ * @param {string} "/getServices" - The endpoint for getting services.
+ * @param {function} verifyAccessesToken - Middleware function to verify access token.
+ * @param {function} async (req, res) - Asynchronous function to handle request and response.
+ * @param {string} req.query.barbersName - The name of the barber to get services for.
+ * @returns {object} JSON response with barber services or error message.
+ */
 AppointmentRouter.get("/getServices", verifyAccessesToken, async (req, res) => {
   const { barbersName } = req.query;
   try {
@@ -55,6 +74,13 @@ AppointmentRouter.get("/getServices", verifyAccessesToken, async (req, res) => {
   }
 });
 
+/**
+ * Route to get the available hours for a specific barber on a selected date.
+ * @param {string} "/getAvailableHours" - The endpoint for getting available hours.
+ * @param {function} verifyAccessesToken - Middleware function to verify access token.
+ * @param {function} async (req, res) - Asynchronous function to handle the request and response.
+ * @returns {Array} An array of available hours for the barber on the selected date.
+ */
 AppointmentRouter.get(
   "/getAvailableHours",
   verifyAccessesToken,
@@ -86,6 +112,15 @@ AppointmentRouter.get(
   }
 );
 
+/**
+ * Route to insert a new appointment into the database.
+ * @param {string} "/InsertAppointment" - The endpoint for inserting an appointment.
+ * @param {function} verifyAccessesToken - Middleware function to verify access token.
+ * @param {function} async (req, res) - Asynchronous function to handle the request and response.
+ * @param {object} req.body - The request body containing barbersName, date, time, and service.
+ * @param {object} req.payload - The payload extracted from the access token containing userID.
+ * @returns {object} JSON response indicating success or failure of the appointment insertion.
+ */
 AppointmentRouter.post(
   "/InsertAppointment",
   verifyAccessesToken,
@@ -112,13 +147,6 @@ AppointmentRouter.post(
       return res.json({ error: "error inserting appointment" }).status(500);
     }
   }
-);
-
-//TODO: add a confirm appointments Changes the status of an appointment to confirmed (first check if there is an appointment for this user)
-AppointmentRouter.put(
-  "/ConfirmAppointment",
-  verifyAccessesToken,
-  async (req, res) => {}
 );
 
 AppointmentRouter.delete("deleteAppointment", (req, res) => {

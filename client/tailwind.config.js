@@ -14,6 +14,7 @@ export default {
         mlg: { max: "1025px" },
         msm: { max: "650px" },
         mss: { max: "512px" },
+        xxs: { max: "375px" },
       },
       height: {
         "screen-200": "calc(100vh - 200px)",
@@ -27,7 +28,6 @@ export default {
   plugins: [
     require("postcss-nested"), // Add this line
     require("autoprefixer"), // Add this line
-    require("tailwindcss"),
     require("tailwindcss-animate"),
   ],
 };

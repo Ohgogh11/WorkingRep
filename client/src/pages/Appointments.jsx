@@ -54,7 +54,7 @@ function Appointments() {
   };
 
   return (
-    <div className=" overflow-scroll  w-full h-Screen flex justify-center items-center">
+    <div className=" overflow-x-hidden overflow-auto  w-full h-Screen flex justify-center items-center">
       <div className=" container border md:w-1/2  mx-auto shadow-xl rounded-2xl pb-2 bg-white">
         <div className=" container horizontal mt-5">
           <Stepper steps={steps} currentStep={currentStep} />

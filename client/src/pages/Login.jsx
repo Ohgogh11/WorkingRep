@@ -157,12 +157,12 @@ function Login() {
           <div
             name="Have an account"
             className="justify-center mt-4 border rounded-md border-gray-700 text-center">
-            <p className=" mt-auto mb-auto p-4 flex justify-center flex-row-reverse gap-1">
+            <div className=" mt-auto mb-auto p-4 flex justify-center flex-row-reverse gap-1">
               <div>? חדש</div>
               <Link to="/Signup" className=" pl-1 text-[#2f81f7]">
                 צור משתמש חדש
               </Link>
-            </p>
+            </div>
           </div>
         </div>
       </main>

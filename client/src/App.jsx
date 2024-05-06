@@ -72,7 +72,7 @@ const App = () => {
               <Route path="*" element={<NoPage />} />
             </Routes>
           </Suspense>
-          <ReactQueryDevtools />
+          {/* <ReactQueryDevtools /> */}
         </QueryClientProvider>
       </BrowserRouter>
     </AuthProvider>

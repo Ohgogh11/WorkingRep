@@ -14,7 +14,7 @@ function Navbar2() {
   };
 
   return (
-    <header className="header bg-[#161b22] text-white py-7 text-sm ">
+    <header className="header sticky top-0 w-full bg-[#161b22] text-white py-7 text-sm z-50 ">
       {/* DeskTop */}
       <div className="DesktopNav flex items-center px-4 mlg:hidden">
         <Icon className="mr-4" />
@@ -36,7 +36,7 @@ function Navbar2() {
             <div className=" w-20">
               <LinkBtn
                 to="/Login"
-                content="Sign in"
+                content="התחברות"
                 className="border border-white rounded-md p-1"
               />
             </div>

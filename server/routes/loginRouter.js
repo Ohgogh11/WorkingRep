@@ -4,6 +4,12 @@ const { getUserByEmail, comparePasswords } = require("../databaseWork");
 const { createJwtToken } = require("../JwtTokenWork");
 //login request handler
 
+/**
+ * Handles the POST request to login a user with the provided email and password.
+ * @param {Object} req - The request object containing the user's email and password.
+ * @param {Object} res - The response object to send back the result of the login attempt.
+ * @returns None
+ */
 loginRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
   // Validation (add more validation if needed)
@@ -21,9 +27,6 @@ loginRouter.post("/", async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).send("Invalid credentials");
     }
-
-    // TODO Login successful (replace with JWT generation or session logic)
-    // TODO ... (e.g., generate JWT using a secret key)
 
     const jwtToken = createJwtToken(
       {

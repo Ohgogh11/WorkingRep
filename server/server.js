@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -23,19 +22,17 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-function generateRandomString(length) {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  const charactersLength = characters.length;
-
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  return result;
-}
-
+/**
+ * Sets up the routes for various API endpoints using Express middleware.
+ * @param {string} "/api/images" - The route for serving static images.
+ * @param {Router} loginRouter - The router for handling login related API endpoints.
+ * @param {Router} signupRouter - The router for handling signup related API endpoints.
+ * @param {Router} AppointmentRouter - The router for handling appointment related API endpoints.
+ * @param {Router} productRouter - The router for handling product related API endpoints.
+ * @param {Router} wishlistRouter - The router for handling wishlist related API endpoints.
+ * @param {Router} userBanListRouter - The router for handling user ban list related API endpoints.
+ * @param {Router}
+ */
 app.use("/api/images", express.static(path.join(__dirname, "images")));
 app.use("/api/login", loginRouter);
 app.use("/api/signup", signupRouter);
@@ -45,6 +42,11 @@ app.use("/api/wishlist", wishlistRouter);
 app.use("/api/userBanListRouter", userBanListRouter);
 app.use("/api/admin/BarberToken", barberTokenRouter);
 
+/**
+ * Starts the server and listens on the specified port.
+ * @param {number} PORT - The port number on which the server will listen.
+ * @returns None
+ */
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

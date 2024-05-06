@@ -2,15 +2,12 @@ const bcrypt = require("bcrypt");
 const pool = require("./db");
 const { deleteProductImage } = require("./UploadProductImage");
 
-// async function getUserByEmail(email) {
-//     try {
-//         const [rows] = await pool.query('SELECT * FROM Users WHERE email = ?', [email]);
-//         return rows[0]; // Return the user object or null if not found
-//     } catch (err) {
-//         console.error(err);
-//         throw err; // Re-throw the error for handling in the route
-//     }
-// }
+/**
+ * Retrieves the barber services offered by a specific barber.
+ * @param {string} barbersName - The name of the barber whose services are being retrieved.
+ * @returns {Promise} A promise that resolves with an array of objects containing the initial cost, description, and name of each service offered by the barber.
+ * @throws {Error} If there is an error in retrieving the barber services.
+ */
 function getBarberServices(barbersName) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -26,6 +23,15 @@ function getBarberServices(barbersName) {
   });
 }
 
+/**
+ * Inserts a new appointment into the database with the provided details.
+ * @param {number} userId - The ID of the user making the appointment.
+ * @param {string} barbersName - The name of the barber for the appointment.
+ * @param {string} date - The date of the appointment.
+ * @param {string} time - The time of the appointment.
+ * @param {string} appTypeName - The type of appointment.
+ * @returns {Promise<number>} A promise that resolves to the number of affected rows in the appointments table.
+ */
 function insertAppointment(userId, barbersName, date, time, appTypeName) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -42,6 +48,11 @@ function insertAppointment(userId, barbersName, date, time, appTypeName) {
   });
 }
 
+/**
+ * Retrieves the type ID from the database based on the given application type name.
+ * @param {string} appTypeName - The name of the application type to retrieve the ID for.
+ * @returns {Promise<number>} A promise that resolves with the type ID if successful, or rejects with an error.
+ */
 function getTypeIdByName(appTypeName) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -56,6 +67,12 @@ function getTypeIdByName(appTypeName) {
   });
 }
 
+/**
+ * Retrieves appointments by date from the database.
+ * @param {string} date - The date for which appointments are to be retrieved.
+ * @returns {Promise<Array<string>>} A promise that resolves to an array of appointment times in HH:mm format.
+ * @throws {Error} If there is an error while retrieving appointments.
+ */
 function getAppointmentsByDate(date) {
   // date format is (YYYY-MM-DD)
   return new Promise(async (resolve, reject) => {
@@ -78,6 +95,12 @@ function getAppointmentsByDate(date) {
   });
 }
 
+/**
+ * Retrieves the working hours of a barber on a specific day of the week.
+ * @param {number} barberId - The ID of the barber.
+ * @param {number} dayOfWeek - The day of the week (0-6, where 0 is Sunday and 6 is Saturday).
+ * @returns {Promise} A promise that resolves to an array of available hours for appointments.
+ */
 function getBarbersWorkingHoursByDate(barberId, dayOfWeek) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -146,6 +169,11 @@ function getBarbersWorkingHoursByDate(barberId, dayOfWeek) {
   });
 }
 
+/**
+ * Retrieves the barber ID based on the first name of the barber.
+ * @param {string} firstName - The first name of the barber to search for.
+ * @returns {Promise<number|null>} A promise that resolves with the barber ID if found, or null if not found.
+ */
 function getBarberIdByFirstName(firstName) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -160,6 +188,11 @@ function getBarberIdByFirstName(firstName) {
   });
 }
 
+/**
+ * Checks if a user can schedule an appointment based on the number of existing appointments.
+ * @param {number} userId - The ID of the user to check for appointment scheduling.
+ * @returns {Promise<boolean>} A promise that resolves to true if the user can schedule an appointment, false otherwise.
+ */
 function canScheduleAppointment(userId) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -174,6 +207,11 @@ function canScheduleAppointment(userId) {
   });
 }
 
+/**
+ * Retrieves a list of barbers from the database.
+ * @returns {Promise<Array>} A promise that resolves with an array of objects containing the first names of barbers.
+ * @throws {Error} If there is an error while querying the database.
+ */
 function getBarbers() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -187,6 +225,13 @@ function getBarbers() {
   });
 }
 
+/**
+ * Inserts a product into a user's wishlist in the database.
+ * @param {number} userId - The ID of the user adding the product to their wishlist.
+ * @param {number} productId - The ID of the product being added to the wishlist.
+ * @returns {Promise<number>} A promise that resolves to the number of affected rows in the database.
+ * @throws {Error} If there is an error inserting the product into the wishlist.
+ */
 function insertToWishList(userId, productId) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -201,6 +246,13 @@ function insertToWishList(userId, productId) {
   });
 }
 
+/**
+ * Deletes a product from a user's wishlist in the database.
+ * @param {number} userId - The ID of the user whose wishlist is being modified.
+ * @param {number} productId - The ID of the product to be deleted from the wishlist.
+ * @returns {Promise<number>} A promise that resolves to the number of rows affected by the deletion.
+ * @throws {Error} If there is an error deleting the product from the wishlist.
+ */
 function deleteWishList(userId, productId) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -215,6 +267,12 @@ function deleteWishList(userId, productId) {
   });
 }
 
+/**
+ * Retrieves a user from the database based on their email address.
+ * @param {string} email - The email address of the user to retrieve.
+ * @returns {Promise} A promise that resolves with the user object if found, or null if not found.
+ * @throws {Error} If there is an error while querying the database.
+ */
 function getUserByEmail(email) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -228,6 +286,12 @@ function getUserByEmail(email) {
   });
 }
 
+/**
+ * Retrieves a user from the database based on the provided user ID.
+ * @param {number} id - The ID of the user to retrieve.
+ * @returns {Promise} A promise that resolves with the user object if found, or null if not found.
+ * @throws {Error} If there is an error while querying the database.
+ */
 function getUserById(id) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -241,17 +305,13 @@ function getUserById(id) {
   });
 }
 
-// async function comparePasswords(user, password) {
-//     try {
-//         const validPassword = await bcrypt.compare(password, user.user_password);
-//         console.log(validPassword);
-//         return validPassword;
-//     } catch (err) {
-//         console.error(err);
-//         throw err; // Re-throw the error for handling in the route
-//     }
-// }
 
+/**
+ * Compare the provided password with the hashed password stored for a user.
+ * @param {object} user - The user object containing the hashed password.
+ * @param {string} password - The password to compare with the hashed password.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating whether the passwords match.
+ */
 function comparePasswords(user, password) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -263,6 +323,12 @@ function comparePasswords(user, password) {
   });
 }
 
+/**
+ * Check if a user exists in the database based on their email or phone number.
+ * @param {string} email - The email of the user to check.
+ * @param {string} phoneNumber - The phone number of the user to check.
+ * @returns {Promise<boolean>} A promise that resolves to true if the user exists, false otherwise.
+ */
 function doesUserExist(email, phoneNumber) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -277,6 +343,12 @@ function doesUserExist(email, phoneNumber) {
   });
 }
 
+/**
+ * Check if a product with the given productId exists in the database.
+ * @param {number} productId - The id of the product to check for existence.
+ * @returns {Promise<boolean>} A promise that resolves to true if the product exists, false otherwise.
+ * @throws {Error} If there is an error while querying the database.
+ */
 function doesProductExists(productId) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -291,7 +363,17 @@ function doesProductExists(productId) {
   });
 }
 
-// Function to insert user (with password hashing)
+/**
+ * Inserts a new user into the database with the provided information.
+ * @param {string} email - The email of the user.
+ * @param {string} first_name - The first name of the user.
+ * @param {string} last_name - The last name of the user.
+ * @param {string} phone_number - The phone number of the user.
+ * @param {string} password - The password of the user.
+ * @param {string} [permission='regular'] - The permission level of the user (default is 'regular').
+ * @returns {number} The ID of the newly inserted user.
+ * @throws {Error} If there is an error inserting the user into the database.
+ */
 async function insertUser(
   email,
   first_name,
@@ -312,6 +394,11 @@ async function insertUser(
   }
 }
 
+/**
+ * Retrieves products from the database using a Promise.
+ * @returns {Promise} A Promise that resolves with the first product from the database, or null if no products are found.
+ * @throws {Error} If there is an error while querying the database.
+ */
 function getProducts() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -323,6 +410,15 @@ function getProducts() {
   });
 }
 
+/**
+ * Inserts a new product into the database with the provided information.
+ * @param {string} product_name - The name of the product.
+ * @param {string} product_description - The description of the product.
+ * @param {number} price - The price of the product.
+ * @param {number} stock_quantity - The quantity of the product in stock.
+ * @param {string} imageUrl - The URL of the product image.
+ * @returns {Promise<number>} A promise that resolves to the number of affected rows in the database.
+ */
 function insertProduct(
   product_name,
   product_description,
@@ -349,6 +445,11 @@ function insertProduct(
   });
 }
 
+/**
+ * Deletes an image associated with a product from the database.
+ * @param {number} productId - The ID of the product whose image is to be deleted.
+ * @returns {Promise<void>} A promise that resolves once the image is deleted.
+ */
 async function deleteImageFromDB(productId) {
   try {
     const [imageUrlResult] = await pool.query(
@@ -366,6 +467,11 @@ async function deleteImageFromDB(productId) {
   }
 }
 
+/**
+ * Deletes a product from the database and its associated image.
+ * @param {number} productId - The ID of the product to delete.
+ * @returns {Promise<number>} A promise that resolves with the number of affected rows after deletion.
+ */
 async function deleteProductFromDB(productId) {
   console.log(await deleteImageFromDB(productId));
 
