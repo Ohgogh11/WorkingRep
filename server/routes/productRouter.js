@@ -32,7 +32,7 @@ productRouter.get("/", async (req, res) => {
  */
 productRouter.post("/", upload.single("imageFile"), async (req, res) => {
   const { productName, description, price, stockQuantity } = req.body;
-  const imageUrl = `http://localhost:5000/api/images/${req.file.filename}`;
+  const imageUrl = `api/images/${req.file.filename}`;
 
   console.table(req.body);
   console.log(imageUrl);

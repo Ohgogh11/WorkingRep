@@ -6,7 +6,6 @@ import { ShopContext } from "../contexts/ShopContext";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import DeleteModal from "../Components/DeleteModal";
 
 function Store() {
   const isAuthenticated = useIsAuthenticated();
@@ -22,19 +21,19 @@ function Store() {
         deletePressed,
         setDeletePressed,
       }}>
-      <div className="container mx-auto">
-        <h1 className=" text-6xl underline font-bold mb-4 text-center mt-20">
+      <div className='container mx-auto'>
+        <h1 className=' text-6xl underline font-bold mb-4 text-center mt-20'>
           המוצרים שלנו
         </h1>
-        <div className=" flex justify-around py-5">
+        <div className=' flex justify-around py-5'>
           <AdminComponent>
             <Link
               to={"/admin/Create-New-Product"}
-              className="w-40 bg-green-500 border rounded-xl text-center">
+              className='w-40 bg-green-500 border rounded-xl text-center'>
               הוסף מוצר
             </Link>
             <button
-              className="w-40 bg-red-500 border rounded-xl text-center"
+              className='w-40 bg-red-500 border rounded-xl text-center'
               onClick={() => setDeletePressed((prev) => !prev)}>
               מחק מוצר
             </button>

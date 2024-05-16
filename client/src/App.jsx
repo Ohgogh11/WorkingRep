@@ -16,7 +16,7 @@ import CreateBarber from "./pages/CreateBarber";
 
 // import Appointments from "./pages/Appointments"; //! delete after testing
 // for authProvider
-const store = createStore({
+const authStore = createStore({
   authType: "cookie",
   authName: "_auth",
   cookieDomain: window.location.hostname,
@@ -32,47 +32,54 @@ const Signup = lazy(() => import("./pages/Signup"));
 const NoPage = lazy(() => import("./pages/NoPage"));
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 const TokenGenerationPage = lazy(() => import("./pages/TokenGenerationPage"));
+const AppointmentConfirmationPage = lazy(() =>
+  import("./pages/AppointmentConfirmation")
+);
 const dontShowNav = ["/login", "/signup"]; // add more paths to not show navigation bar in them
 
 const App = () => {
   return (
-    <AuthProvider store={store}>
+    <AuthProvider store={authStore}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <NavBarControlled />
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route index element={<HomePage />} />
-              <Route path="/" element={<HomePage />} />
-              <Route path="/Login" element={<Login />} />
-              <Route path="/Signup" element={<Signup />} />
-              <Route path="/Store" element={<Store />} />
-              <Route path="/New-Barber?" element={<CreateBarber />} />
+              <Route path='/' element={<HomePage />} />
               <Route
-                path="/products/:productId"
+                path='/AppointmentConfirmation/:token'
+                element={<AppointmentConfirmationPage />}
+              />
+              <Route path='/Login' element={<Login />} />
+              <Route path='/Signup' element={<Signup />} />
+              <Route path='/Store' element={<Store />} />
+              <Route path='/New-Barber/:token' element={<CreateBarber />} />
+              <Route
+                path='/products/:productId'
                 element={<ProductDetailPage />}
               />
-              <Route element={<AuthOutlet fallbackPath="/Login" />}>
+              <Route element={<AuthOutlet fallbackPath='/Login' />}>
                 <Route
-                  path="/ScheduleAppointments"
+                  path='/ScheduleAppointments'
                   element={<Appointments />}
                 />
                 <Route element={<AdminOutlet />}>
-                  <Route path="/admin" element={<div>admin</div>} />
+                  <Route path='/admin' element={<div>admin</div>} />
                   <Route
-                    path="/admin/barberLink"
+                    path='/admin/barberLink'
                     element={<TokenGenerationPage />}
                   />
                   <Route
-                    path="/admin/Create-New-Product"
+                    path='/admin/Create-New-Product'
                     element={<CreateProduct />}
                   />
                 </Route>
               </Route>
-              <Route path="*" element={<NoPage />} />
+              <Route path='*' element={<NoPage />} />
             </Routes>
           </Suspense>
-          {/* <ReactQueryDevtools /> */}
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </BrowserRouter>
     </AuthProvider>

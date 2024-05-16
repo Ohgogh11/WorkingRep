@@ -33,6 +33,7 @@ app.use(cors(corsOptions));
  * @param {Router} userBanListRouter - The router for handling user ban list related API endpoints.
  * @param {Router}
  */
+
 app.use("/api/images", express.static(path.join(__dirname, "images")));
 app.use("/api/login", loginRouter);
 app.use("/api/signup", signupRouter);

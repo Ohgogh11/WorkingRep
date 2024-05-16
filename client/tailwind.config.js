@@ -18,7 +18,7 @@ export default {
       },
       height: {
         "screen-200": "calc(100vh - 200px)",
-        "full-Screen": "calc(100vh - 88px)",
+        "full-Screen": "calc(100vh - 94px)",
       },
       width: {
         "screen-60": "calc(100vh - 200px)",

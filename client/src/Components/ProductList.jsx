@@ -11,7 +11,7 @@ import DeleteModal from "./DeleteModal";
 const fetchProducts = async () => {
   try {
     const { data } = await axios.get("https://fakestoreapi.com/products");
-    return data;
+    return !data ? data : [];
   } catch (error) {
     throw new Error(error);
   }
@@ -141,7 +141,7 @@ const ProductList = () => {
               }`}>
               {deletePressed ? (
                 <button
-                  className="absolute top-2 right-4 text-red-500 text-4xl"
+                  className='absolute top-2 right-4 text-red-500 text-4xl'
                   onClick={confirmDeletion}>
                   <IoClose />
                 </button>
@@ -154,17 +154,17 @@ const ProductList = () => {
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="max-w-full max-h-full p-3"
+                  className='max-w-full max-h-full p-3'
                 />
               </Link>
-              <div className="p-4 flex-grow flex flex-col justify-between">
-                <h2 className="text-lg font-semibold mb-2 text-gray-800">
+              <div className='p-4 flex-grow flex flex-col justify-between'>
+                <h2 className='text-lg font-semibold mb-2 text-gray-800'>
                   {product.title}
                 </h2>
-                <div className=" flex flex-col">
+                <div className=' flex flex-col'>
                   <div>
-                    <p className="text-gray-600">${product.price}</p>
-                    <p className="text-gray-600">
+                    <p className='text-gray-600'>${product.price}</p>
+                    <p className='text-gray-600'>
                       Category: {product.category}
                     </p>
                   </div>
@@ -173,18 +173,18 @@ const ProductList = () => {
                       deletePressed ? "pointer-events-none" : ""
                     }`}>
                     <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                      className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300'
                       onClick={(e) => {}}>
                       הוסף לסל
                     </button>
                     <button
-                      className="ml-2 px-4 py-2 rounded hover:bg-gray-300 transition duration-300"
+                      className='ml-2 px-4 py-2 rounded hover:bg-gray-300 transition duration-300'
                       onClick={(e) => {
                         toggleLike(product.id);
                       }}>
                       {wishListQuery.data &&
                       wishListQuery.data.id === product.id ? (
-                        <FaHeart color="#ff0000" />
+                        <FaHeart color='#ff0000' />
                       ) : (
                         <FaRegHeart />
                       )}

@@ -11,12 +11,9 @@ function BarberSelection() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["Barbers"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:5000/api/Appointments/getBarbers",
-        {
-          headers: { authorization: headerAuth },
-        }
-      );
+      const response = await axios.get("/api/Appointments/getBarbers", {
+        headers: { authorization: headerAuth },
+      });
       return response.data;
     },
   });
@@ -48,8 +45,8 @@ function BarberSelection() {
   };
   return (
     <div>
-      <h1 className="font-bold text-xl text-end mb-10">בחרו את נותן השירות</h1>
-      <div className="flex gap-14 justify-center">
+      <h1 className='font-bold text-xl text-end mb-10'>בחרו את נותן השירות</h1>
+      <div className='flex gap-14 justify-center'>
         {data.map((barber, index) => {
           return (
             <button

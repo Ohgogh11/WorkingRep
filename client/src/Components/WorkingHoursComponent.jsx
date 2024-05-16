@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
 const days = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 export function WorkingHoursComponent() {
@@ -29,43 +29,43 @@ export function WorkingHoursComponent() {
   };
 
   return (
-    <div className="container mx-auto py-10">
-      <table className="table-auto w-full sm:border border-gray-200 shadow rounded-md">
+    <div className='container mx-auto py-10 '>
+      <table className='table-auto w-full sm:border border-gray-200 shadow rounded-md'>
         <thead>
-          <tr className="bg-gray-100 text-left text-sm font-medium">
-            <th className="px-4 py-2">Day</th>
-            <th className="px-4 py-2 max-w-80">Starting Hour</th>
-            <th className="px-4 py-2">Ending Hour</th>
+          <tr className='bg-gray-100 text-left text-sm font-medium'>
+            <th className='px-4 py-2'>Day</th>
+            <th className='px-4 py-2 max-w-80'>Starting Hour</th>
+            <th className='px-4 py-2'>Ending Hour</th>
           </tr>
         </thead>
         <tbody>
           {days.map((day) => (
-            <tr key={day} className="sm:border-b border-gray-200">
-              <td className="px-4 py-2 w-52">{day}</td>
-              <td className="px-1 py-2">
+            <tr key={day} className='sm:border-b border-gray-200'>
+              <td className='px-4 py-2 w-52'>{day}</td>
+              <td className='px-1 py-2'>
                 <input
                   type={
                     /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)
                       ? "time"
                       : "time"
                   } // Use time picker on mobile devices
-                  name="start"
+                  name='start'
                   id={`start-${day}`}
-                  className="rounded-md border max-w-72 border-gray-300 p-1 focus:outline-none focus:ring-1 focus:ring-blue-500 w-full"
+                  className='rounded-md border max-w-72 border-gray-300 p-1 focus:outline-none focus:ring-1 focus:ring-blue-500 w-full'
                   value={workingHours[day].start}
                   onChange={(event) => handleInputChange(event, day)}
                 />
               </td>
-              <td className="px-1 py-2">
+              <td className='px-1 py-2'>
                 <input
                   type={
                     /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)
                       ? "time"
                       : "time"
                   } // Use time picker on mobile devices
-                  name="end"
+                  name='end'
                   id={`end-${day}`}
-                  className="rounded-md border max-w-72  border-gray-300 p-1 focus:outline-none focus:ring-1 focus:ring-blue-500 w-full"
+                  className='rounded-md border max-w-72  border-gray-300 p-1 focus:outline-none focus:ring-1 focus:ring-blue-500 w-full'
                   value={workingHours[day].end}
                   onChange={(event) => handleInputChange(event, day)}
                 />

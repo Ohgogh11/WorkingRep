@@ -3,6 +3,43 @@ const pool = require("./db");
 const { deleteProductImage } = require("./UploadProductImage");
 
 /**
+ * Update the status of an appointment.
+ * @param {number} userId - The ID of the user that scheduled the appointment to update.
+ * @param {string} newStatus - The new status value.
+ * @returns {Promise<number>} A promise that resolves with the number of affected rows.
+ * @throws {Error} If an error occurs during the database operation.
+ */
+function updateAppointmentStatus(userId, newStatus) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const sql = "UPDATE appointments SET status = ? WHERE user_id = ?";
+      const [result] = await pool.query(sql, [newStatus, userId]);
+      resolve(result.affectedRows > 0);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Delete appointments by user ID.
+ * @param {number} userId - The ID of the user whose appointments will be deleted.
+ * @returns {Promise<number>} A promise that resolves with the number of affected rows.
+ * @throws {Error} If an error occurs during the database operation.
+ */
+function deleteAppointmentByUserId(userId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const sql = "DELETE FROM appointments WHERE user_id = ?";
+      const [result] = await pool.query(sql, [userId]);
+      resolve(result.affectedRows > 0);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
  * Retrieves the barber services offered by a specific barber.
  * @param {string} barbersName - The name of the barber whose services are being retrieved.
  * @returns {Promise} A promise that resolves with an array of objects containing the initial cost, description, and name of each service offered by the barber.
@@ -16,9 +53,9 @@ function getBarberServices(barbersName) {
         "SELECT initial_cost,description,name FROM service_type WHERE barber_id = ?",
         [barbers_id]
       ); // get all
-      resolve(rows);
+      return resolve(rows);
     } catch (error) {
-      reject(error);
+      return reject(error);
     }
   });
 }
@@ -27,19 +64,35 @@ function getBarberServices(barbersName) {
  * Inserts a new appointment into the database with the provided details.
  * @param {number} userId - The ID of the user making the appointment.
  * @param {string} barbersName - The name of the barber for the appointment.
- * @param {string} date - The date of the appointment.
- * @param {string} time - The time of the appointment.
+ * @param {Date} date - The date of the appointment.
+ * @param {Date} time - The time of the appointment.
  * @param {string} appTypeName - The type of appointment.
+ * @param {string} confirmationToken - confirmation token for the appointment for link creation
  * @returns {Promise<number>} A promise that resolves to the number of affected rows in the appointments table.
  */
-function insertAppointment(userId, barbersName, date, time, appTypeName) {
+function insertAppointment(
+  userId,
+  barbersName,
+  date,
+  time,
+  appTypeName,
+  confirmationToken
+) {
   return new Promise(async (resolve, reject) => {
     try {
       let barber_id = await getBarberIdByFirstName(barbersName);
       let type_id = await getTypeIdByName(appTypeName);
       const [rows] = await pool.query(
-        "INSERT INTO appointments (user_id, barber_id, date, time, status, type_id) VALUES (?,?,?,?,?,?)",
-        [parseInt(userId), barber_id, date, time, "pending", type_id]
+        "INSERT INTO appointments (user_id, barber_id, date, time, status, type_id, confirmation_token) VALUES (?,?,?,?,?,?,?)",
+        [
+          parseInt(userId),
+          barber_id,
+          date,
+          time,
+          "pending",
+          type_id,
+          confirmationToken,
+        ]
       );
       resolve(rows.affectedRows);
     } catch (error) {
@@ -96,12 +149,88 @@ function getAppointmentsByDate(date) {
 }
 
 /**
+ * Retrieves the confirmation token for a user's appointments from the database.
+ * @param {number} userId - The ID of the user to retrieve the token for.
+ * @returns {Promise<string>} A promise that resolves with the confirmation token if found,
+ * or rejects with an error message if no appointment is found for the user.
+ */
+function getUserAppointmentsToken(userId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const [confirmationToken] = await pool.query(
+        "SELECT confirmation_token FROM appointments WHERE user_id = ?",
+        [userId]
+      );
+      if (confirmationToken) {
+        resolve(confirmationToken[0]);
+      }
+      throw new Error("No appointment with user id ");
+    } catch (error) {
+      resolve(error); // Re-throw the error
+    }
+  });
+}
+
+/**
+ * Retrieves appointment details for a specific user from the database.
+ * @param {number} userId - The ID of the user whose appointment details are to be retrieved.
+ * @returns {Promise} A promise that resolves with the appointment details of the user.
+ */
+function getAppointmentsByUserId(userId) {
+  return new Promise(async (resolve, reject) => {
+    // SQL query to retrieve appointment details along with user information
+    const sql = `
+      SELECT appointments.*, service_type.*,users.first_name
+      FROM appointments
+      JOIN users ON appointments.user_id = users.user_id
+      JOIN service_type ON appointments.type_id = service_type.type_id
+      WHERE appointments.user_id = ?
+    `;
+
+    try {
+      const [appointment] = await pool.query(sql, [userId]);
+      resolve(appointment);
+    } catch (error) {
+      reject(error);
+    }
+    // Execute the query
+  });
+}
+
+/**
+ * Get the day of the week for a given date string.
+ * @param {string} dateString - The date string in a valid date format.
+ * @returns {string} The day of the week corresponding to the given date string.
+ */
+function getDayOfWeek(dateString) {
+  // Create a new Date object using the dateString
+  const date = new Date(dateString);
+
+  // Get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const dayOfWeekIndex = date.getDay();
+
+  // Define an array of day names
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  // Return the name of the day of the week corresponding to the index
+  return daysOfWeek[dayOfWeekIndex];
+}
+
+/**
  * Retrieves the working hours of a barber on a specific day of the week.
  * @param {number} barberId - The ID of the barber.
- * @param {number} dayOfWeek - The day of the week (0-6, where 0 is Sunday and 6 is Saturday).
+ * @param {Date} SelectedDate - The Date the user Selected
  * @returns {Promise} A promise that resolves to an array of available hours for appointments.
  */
-function getBarbersWorkingHoursByDate(barberId, dayOfWeek) {
+function getBarbersWorkingHoursByDate(barberId, SelectedDate) {
+  const dayOfWeek = getDayOfWeek(SelectedDate);
   return new Promise(async (resolve, reject) => {
     try {
       // Fetch barber's working hours
@@ -125,30 +254,40 @@ function getBarbersWorkingHoursByDate(barberId, dayOfWeek) {
       );
 
       // Convert time strings to Date objects for easier comparison
-      const startDateTime = new Date(`1970-01-01T${start_time}`);
-      const endDateTime = new Date(`1970-01-01T${end_time}`);
+      const startDateTime = new Date(
+        new Date(SelectedDate).setHours(...start_time.split(":").map(Number))
+      );
+
+      const endDateTime = new Date(
+        new Date(SelectedDate).setHours(...end_time.split(":").map(Number))
+      );
       const appointmentDurationMs = appointment_duration * 60000; // convert minutes to milliseconds
+
+      const realDateTime = new Date(new Date().getTime() + 3 * 60 * 60 * 1000); // real current time + 3 hours
 
       // Generate available hours
       const availableHours = [];
       let currentDateTime = new Date(startDateTime);
-
       while (currentDateTime <= endDateTime) {
         const currentHour = currentDateTime.getHours();
         const currentMinute = currentDateTime.getMinutes();
 
         const isDuringBreak = breaksRows.some(
           ({ start_time: breakStart, end_time: breakEnd }) => {
-            const breakStartTime = new Date(`1970-01-01T${breakStart}`);
-            const breakEndTime = new Date(`1970-01-01T${breakEnd}`);
+            const breakStartTime = new Date(
+              new Date().setHours(...breakStart.split(":").map(Number))
+            );
+            const breakEndTime = new Date(
+              new Date().setHours(...breakEnd.split(":").map(Number))
+            );
             return (
               currentDateTime >= breakStartTime &&
               currentDateTime < breakEndTime
             );
           }
         );
-
-        if (!isDuringBreak) {
+        // check if the current time isn't in the breaks range and if its 3 hours apart from the real  current time
+        if (!isDuringBreak && currentDateTime > realDateTime) {
           availableHours.push(
             `${currentHour.toString().padStart(2, "0")}:${currentMinute
               .toString()
@@ -304,7 +443,6 @@ function getUserById(id) {
     }
   });
 }
-
 
 /**
  * Compare the provided password with the hashed password stored for a user.
@@ -508,4 +646,8 @@ module.exports = {
   getTypeIdByName,
   insertAppointment,
   getBarberServices,
+  updateAppointmentStatus,
+  deleteAppointmentByUserId,
+  getAppointmentsByUserId,
+  getUserAppointmentsToken,
 };

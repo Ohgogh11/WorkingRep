@@ -11,10 +11,12 @@ const jwt = require("jsonwebtoken");
  */
 function createJwtToken(payload, secretKey, expiration, options = {}) {
   // Default options
-  const defaultOptions = {
-    expiresIn: expiration,
-  };
 
+  const defaultOptions = {};
+
+  if (expiration) {
+    defaultOptions.expiresIn = expiration;
+  }
   // Merge provided options with defaults
   const mergedOptions = Object.assign({}, defaultOptions, options);
 
@@ -50,10 +52,10 @@ function verifyAccessesToken(req, res, next) {
 }
 
 /**
- * Verifies the Barber token in the request headers and sets the payload in the request object.
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- * @param {Function} next - The next middleware function in the stack.
+ * Verifies the token in the request headers and sets the payload in the request object.
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
  * @returns None
  */
 function verifyBarberToken(req, res, next) {
@@ -62,6 +64,28 @@ function verifyBarberToken(req, res, next) {
     return res.sendStatus(401);
   }
   const response = verifyToken(token, process.env.ADMIN_JWT_SECRET);
+  if (!response) {
+    return res.sendStatus(403);
+  }
+  req.payload = response;
+  next();
+}
+
+/**
+ * Verifies the confirmation token in the request headers using the JWT secret.
+ * If the token is missing or invalid, it sends the appropriate status code in the response.
+ * If the token is valid, it attaches the decoded payload to the request object and calls the next middleware.
+ * @param {Request} req - The request object containing the confirmation token in the headers.
+ * @param {Response} res - The response object to send status codes.
+ * @param {NextFunction} next - The next middleware function to call.
+ * @returns None
+ */
+function verifyConfirmationToken(req, res, next) {
+  const token = req.headers["authorization"];
+  if (!token) {
+    return res.sendStatus(401);
+  }
+  const response = verifyToken(token, process.env.JWT_SECRET);
   if (!response) {
     return res.sendStatus(403);
   }
@@ -84,4 +108,9 @@ function verifyToken(token, secretKey) {
   }
 }
 
-module.exports = { createJwtToken, verifyAccessesToken, verifyBarberToken };
+module.exports = {
+  createJwtToken,
+  verifyAccessesToken,
+  verifyBarberToken,
+  verifyConfirmationToken,
+};
