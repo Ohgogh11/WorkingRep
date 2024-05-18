@@ -10,6 +10,7 @@ const wishlistRouter = require("./routes/wishlistRouter");
 const userBanListRouter = require("./routes/userBanListRouter");
 const barberTokenRouter = require("./routes/barberTokenRouter");
 const AppointmentRouter = require("./routes/AppointmentRouter");
+const pool = require("./db");
 const app = express();
 
 app.use(bodyParser.json());
@@ -49,6 +50,26 @@ app.use("/api/admin/BarberToken", barberTokenRouter);
  * @returns None
  */
 const PORT = 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// Gracefully shutdown server and close MySQL connection pool
+const shutdown = async () => {
+  console.log("Shutting down server...");
+  server.close(() => {
+    console.log("HTTP server closed.");
+  });
+
+  try {
+    await pool.end();
+    console.log("MySQL connection pool closed.");
+    process.exit(0);
+  } catch (err) {
+    console.error("Error closing MySQL connection pool:", err);
+    process.exit(1);
+  }
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
