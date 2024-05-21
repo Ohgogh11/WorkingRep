@@ -1,7 +1,6 @@
 const express = require("express");
 const signupRouter = express.Router();
 const { insertUser, doesUserExist, getUserById } = require("../databaseWork");
-
 /**
  * Handles the POST request to sign up a new user.
  * @param {Object} req - The request object containing user information.
@@ -41,5 +40,4 @@ signupRouter.post("/", async (req, res) => {
     res.status(500).json({ message: "Error creating user" });
   }
 });
-
 module.exports = signupRouter;

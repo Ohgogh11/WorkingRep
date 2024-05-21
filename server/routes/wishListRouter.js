@@ -6,8 +6,6 @@ const {
   doesUserExist,
   doesProductExists,
 } = require("../databaseWork");
-
-// updates the wishlist table
 /**
  * POST request handler for adding a product to a user's wishlist.
  * @param {Object} req - The request object containing userId and productId in the query parameters.
@@ -37,7 +35,6 @@ wishlistRouter.post("/", async (req, res) => {
     return res.status(500);
   }
 });
-
 /**
  * Handles the DELETE request to remove a product from a user's wishlist.
  * @param {Object} req - The request object containing userId and productId in the query.
@@ -67,5 +64,4 @@ wishlistRouter.delete("/", async (req, res) => {
     return res.status(500);
   }
 });
-
 module.exports = wishlistRouter;

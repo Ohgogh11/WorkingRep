@@ -4,7 +4,6 @@ const {
   scheduleSMSReminder,
   cancelSMSReminder,
 } = require("../reminderService");
-
 const {
   verifyAccessesToken,
   createJwtToken,
@@ -24,7 +23,6 @@ const {
   getUserById,
   getUserAppointmentsToken,
 } = require("../databaseWork");
-
 /**
  * Route to get the list of available barbers for scheduling appointments.
  * @param {Request} req - The request object.
@@ -43,7 +41,6 @@ AppointmentRouter.get("/getBarbers", verifyAccessesToken, async (req, res) => {
     return res.json({ error: error.message }).status(500);
   }
 });
-
 /**
  * Route to get services for a specific barber.
  * @param {string} "/getServices" - The endpoint for getting services.
@@ -97,7 +94,6 @@ AppointmentRouter.get(
     }
   }
 );
-
 /**
  * Route to insert a new appointment into the database.
  * @param {string} "/InsertAppointment" - The endpoint for inserting an appointment.
@@ -147,7 +143,6 @@ AppointmentRouter.post(
     }
   }
 );
-
 /**
  * Route to delete an appointment by user ID after verifying confirmation token.
  * @param {string} "/deleteAppointment" - The endpoint for deleting an appointment.
@@ -174,7 +169,6 @@ AppointmentRouter.delete(
     }
   }
 );
-
 /**
  * PUT endpoint to confirm an appointment after verifying the confirmation token.
  * @param {string} "/confirmAppointment" - The route for confirming an appointment.
@@ -203,7 +197,6 @@ AppointmentRouter.put(
     }
   }
 );
-
 /**
  * Route to get an appointment for a specific user ID after verifying the confirmation token.
  * @param {string} "/getAppointment" - The endpoint for getting the appointment.
@@ -227,7 +220,6 @@ AppointmentRouter.get(
     }
   }
 );
-
 /**
  * Route handler for getting the appointment link for a user.
  * @param {Request} req - The request object.
@@ -253,5 +245,4 @@ AppointmentRouter.get(
     }
   }
 );
-
 module.exports = AppointmentRouter;

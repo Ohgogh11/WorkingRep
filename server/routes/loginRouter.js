@@ -2,8 +2,6 @@ const express = require("express");
 const loginRouter = express.Router();
 const { getUserByEmail, comparePasswords } = require("../databaseWork");
 const { createJwtToken } = require("../JwtTokenWork");
-//login request handler
-
 /**
  * Handles the POST request to login a user with the provided email and password.
  * @param {Object} req - The request object containing the user's email and password.

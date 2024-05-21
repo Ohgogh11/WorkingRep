@@ -6,8 +6,6 @@ const {
   deleteProductFromDB,
 } = require("../databaseWork");
 const { upload } = require("../UploadProductImage");
-
-// TODO test this code
 /**
  * Route handler for getting all products.
  * @param {Request} req - The request object.
@@ -23,7 +21,6 @@ productRouter.get("/", async (req, res) => {
     res.status(500).json({ message: "Error creating user" });
   }
 });
-
 /**
  * POST endpoint for creating a new product.
  * @param {Object} req - The request object containing the product details in the body.
@@ -50,7 +47,6 @@ productRouter.post("/", upload.single("imageFile"), async (req, res) => {
     res.status(500).json({ message: "Error creating product" });
   }
 });
-
 /**
  * Route handler for deleting a product from the database.
  * @param {Object} req - The request object.
@@ -73,5 +69,4 @@ productRouter.delete("/", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 module.exports = productRouter;

@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 /**
  * Creates a JWT token with the given payload, secret key, expiration, and options.
  * @param {object} payload - The payload to be included in the JWT token.
@@ -29,7 +28,6 @@ function createJwtToken(payload, secretKey, expiration, options = {}) {
     throw new Error("Failed to generate JWT token"); // Or handle error differently
   }
 }
-
 /**
  * Verifies the access token in the request headers and proceeds to the next middleware if valid.
  * @param {Request} req - The request object containing headers.
@@ -50,7 +48,6 @@ function verifyAccessesToken(req, res, next) {
   req.payload = response;
   next();
 }
-
 /**
  * Verifies the token in the request headers and sets the payload in the request object.
  * @param {Object} req - The request object
@@ -70,7 +67,6 @@ function verifyBarberToken(req, res, next) {
   req.payload = response;
   next();
 }
-
 /**
  * Verifies the confirmation token in the request headers using the JWT secret.
  * If the token is missing or invalid, it sends the appropriate status code in the response.
@@ -92,7 +88,6 @@ function verifyConfirmationToken(req, res, next) {
   req.payload = response;
   next();
 }
-
 /**
  * Verifies the authenticity of a token using the provided secret key.
  * @param {string} token - The token to verify.
@@ -107,7 +102,6 @@ function verifyToken(token, secretKey) {
     return null;
   }
 }
-
 module.exports = {
   createJwtToken,
   verifyAccessesToken,

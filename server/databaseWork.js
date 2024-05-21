@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const pool = require("./db");
 const { deleteProductImage } = require("./UploadProductImage");
-
 /**
  * Update the status of an appointment.
  * @param {number} userId - The ID of the user that scheduled the appointment to update.
@@ -20,7 +19,6 @@ function updateAppointmentStatus(userId, newStatus) {
     }
   });
 }
-
 /**
  * Delete appointments by user ID.
  * @param {number} userId - The ID of the user whose appointments will be deleted.
@@ -38,7 +36,6 @@ function deleteAppointmentByUserId(userId) {
     }
   });
 }
-
 /**
  * Retrieves the barber services offered by a specific barber.
  * @param {string} barbersName - The name of the barber whose services are being retrieved.
@@ -59,7 +56,6 @@ function getBarberServices(barbersName) {
     }
   });
 }
-
 /**
  * Inserts a new appointment into the database with the provided details.
  * @param {number} userId - The ID of the user making the appointment.
@@ -100,7 +96,6 @@ function insertAppointment(
     }
   });
 }
-
 /**
  * Retrieves the type ID from the database based on the given application type name.
  * @param {string} appTypeName - The name of the application type to retrieve the ID for.
@@ -119,7 +114,6 @@ function getTypeIdByName(appTypeName) {
     }
   });
 }
-
 /**
  * Retrieves appointments by date from the database.
  * @param {string} date - The date for which appointments are to be retrieved.
@@ -147,7 +141,6 @@ function getAppointmentsByDate(date) {
     }
   });
 }
-
 /**
  * Retrieves the confirmation token for a user's appointments from the database.
  * @param {number} userId - The ID of the user to retrieve the token for.
@@ -170,7 +163,6 @@ function getUserAppointmentsToken(userId) {
     }
   });
 }
-
 /**
  * Retrieves appointment details for a specific user from the database.
  * @param {number} userId - The ID of the user whose appointment details are to be retrieved.
@@ -196,7 +188,6 @@ function getAppointmentsByUserId(userId) {
     // Execute the query
   });
 }
-
 /**
  * Get the day of the week for a given date string.
  * @param {string} dateString - The date string in a valid date format.
@@ -222,7 +213,6 @@ function getDayOfWeek(dateString) {
   // Return the name of the day of the week corresponding to the index
   return daysOfWeek[dayOfWeekIndex];
 }
-
 /**
  * Retrieves the working hours of a barber on a specific day of the week.
  * @param {number} barberId - The ID of the barber.
@@ -307,7 +297,6 @@ function getBarbersWorkingHoursByDate(barberId, SelectedDate) {
     }
   });
 }
-
 /**
  * Retrieves the barber ID based on the first name of the barber.
  * @param {string} firstName - The first name of the barber to search for.
@@ -326,7 +315,6 @@ function getBarberIdByFirstName(firstName) {
     }
   });
 }
-
 /**
  * Checks if a user can schedule an appointment based on the number of existing appointments.
  * @param {number} userId - The ID of the user to check for appointment scheduling.
@@ -345,7 +333,6 @@ function canScheduleAppointment(userId) {
     }
   });
 }
-
 /**
  * Retrieves a list of barbers from the database.
  * @returns {Promise<Array>} A promise that resolves with an array of objects containing the first names of barbers.
@@ -363,7 +350,6 @@ function getBarbers() {
     }
   });
 }
-
 /**
  * Inserts a product into a user's wishlist in the database.
  * @param {number} userId - The ID of the user adding the product to their wishlist.
@@ -384,7 +370,6 @@ function insertToWishList(userId, productId) {
     }
   });
 }
-
 /**
  * Deletes a product from a user's wishlist in the database.
  * @param {number} userId - The ID of the user whose wishlist is being modified.
@@ -405,7 +390,6 @@ function deleteWishList(userId, productId) {
     }
   });
 }
-
 /**
  * Retrieves a user from the database based on their email address.
  * @param {string} email - The email address of the user to retrieve.
@@ -424,7 +408,6 @@ function getUserByEmail(email) {
     }
   });
 }
-
 /**
  * Retrieves a user from the database based on the provided user ID.
  * @param {number} id - The ID of the user to retrieve.
@@ -443,7 +426,6 @@ function getUserById(id) {
     }
   });
 }
-
 /**
  * Compare the provided password with the hashed password stored for a user.
  * @param {object} user - The user object containing the hashed password.
@@ -460,7 +442,6 @@ function comparePasswords(user, password) {
     }
   });
 }
-
 /**
  * Check if a user exists in the database based on their email or phone number.
  * @param {string} email - The email of the user to check.
@@ -480,7 +461,6 @@ function doesUserExist(email, phoneNumber) {
     }
   });
 }
-
 /**
  * Check if a product with the given productId exists in the database.
  * @param {number} productId - The id of the product to check for existence.
@@ -500,7 +480,6 @@ function doesProductExists(productId) {
     }
   });
 }
-
 /**
  * Inserts a new user into the database with the provided information.
  * @param {string} email - The email of the user.
@@ -531,7 +510,6 @@ async function insertUser(
     throw error;
   }
 }
-
 /**
  * Retrieves products from the database using a Promise.
  * @returns {Promise} A Promise that resolves with the first product from the database, or null if no products are found.
@@ -547,7 +525,6 @@ function getProducts() {
     }
   });
 }
-
 /**
  * Inserts a new product into the database with the provided information.
  * @param {string} product_name - The name of the product.
@@ -625,7 +602,6 @@ async function deleteProductFromDB(productId) {
     }
   });
 }
-
 module.exports = {
   getUserByEmail,
   comparePasswords,

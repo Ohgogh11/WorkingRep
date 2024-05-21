@@ -1,8 +1,6 @@
 const express = require("express");
 const banListRouter = express.Router(); //
 const { doesUserExist, insertBanndedUser } = require("../databaseWork");
-
-// updates the wishlist table // TODO: need to change the database function and add the actual functions to the database file
 /**
  * Handles POST requests to add a product to a user's wishlist.
  * @param {Object} req - The request object containing the userId in the query.
@@ -29,7 +27,6 @@ banListRouter.post("/", async (req, res) => {
     return res.status(500);
   }
 });
-
 /**
  * Handles the DELETE request to remove a product from a user's wishlist.
  * @param {Object} req - The request object containing userId and productId in the query.
@@ -59,5 +56,4 @@ banListRouter.delete("/", async (req, res) => {
     return res.status(500);
   }
 });
-
 module.exports = banListRouter;

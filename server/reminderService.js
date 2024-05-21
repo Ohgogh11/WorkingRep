@@ -1,9 +1,7 @@
 const schedule = require("node-schedule");
 const { sendSMSReminder } = require("./smsService"); // Import the function to send SMS reminders
-
 // Object to store scheduled jobs
 const scheduledJobs = {}; // todo add to database
-
 // Function to schedule SMS reminder for an appointment
 /**
  * Schedule an SMS reminder for a given appointment.
@@ -47,7 +45,6 @@ function scheduleSMSReminder(
     console.error("Error scheduling SMS reminder:", error);
   }
 }
-
 // Function to cancel a scheduled SMS reminder
 /**
  * Cancels the SMS reminder for the specified user ID if it exists.
@@ -63,5 +60,4 @@ function cancelSMSReminder(user_id) {
     console.log(`No reminder scheduled for user ID: ${user_id}`);
   }
 }
-
 module.exports = { scheduleSMSReminder, cancelSMSReminder };

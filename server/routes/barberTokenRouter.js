@@ -5,7 +5,6 @@ const {
   verifyAccessesToken,
   verifyBarberToken,
 } = require("../JwtTokenWork");
-
 /**
  * Handles GET requests to "/BarberLink" endpoint to generate a token for admin access.
  * @param {Object} req - The request object.
@@ -20,7 +19,6 @@ barberTokenRouter.get("/BarberLink", verifyAccessesToken, (req, res) => {
   const token = createJwtToken({}, process.env.ADMIN_JWT_SECRET, "3h");
   return res.status(200).json({ link: `${baseUrl}/${token}` });
 });
-
 /**
  * POST endpoint to verify the barber token and approve the connection.
  * @param {string} "/verifyToken" - The route for verifying the token.
@@ -31,5 +29,4 @@ barberTokenRouter.get("/BarberLink", verifyAccessesToken, (req, res) => {
 barberTokenRouter.post("/verifyToken", verifyBarberToken, (req, res) => {
   res.status(202).json({ message: "connection approved" });
 });
-
 module.exports = barberTokenRouter;

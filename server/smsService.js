@@ -13,7 +13,6 @@ function sendSMSReminder(phoneNumber, name, dateTime, token) {
   )} נא לאשר הגעה בקישור:${link}`;
   console.log(message);
 }
-
 /**
  * Formats a given date into a string representation in Hebrew.
  * @param {Date} date - The date to format.
@@ -48,5 +47,4 @@ function formatDate(date) {
     minutes < 10 ? "0" : ""
   }${minutes}`;
 }
-
 module.exports = { sendSMSReminder };
