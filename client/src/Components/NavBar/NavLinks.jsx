@@ -22,16 +22,6 @@ function NavLinks({ className = "" }) {
               חנות
             </Link>
           </li>
-          <IsSignedIn
-            logged={
-              <li className=''>
-                <AppointmentConfirmationLink className=''>
-                  התורים שלי
-                </AppointmentConfirmationLink>
-              </li>
-            }
-          />
-
           <AdminComponent>
             <li className=''>
               <BarberCreationLink className=''>

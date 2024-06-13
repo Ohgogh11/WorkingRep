@@ -11,7 +11,7 @@ import DeleteModal from "./DeleteModal";
 const fetchProducts = async () => {
   try {
     const { data } = await axios.get("https://fakestoreapi.com/products");
-    return !data ? data : [];
+    return data ? data : [];
   } catch (error) {
     throw new Error(error);
   }
@@ -105,7 +105,7 @@ const ProductList = () => {
   });
 
   if (productQuery.isError || wishListQuery.isError)
-    return <div>Error fetching data {productQuery.error}</div>;
+    return <div>Error fetching data {productQuery.error.message}</div>;
 
   const toggleLike = (productId) => {
     if (!isAuthenticated) {
@@ -119,6 +119,8 @@ const ProductList = () => {
     setDelProduct(productId);
     setShowModal(true);
   };
+
+  console.log(productQuery.data);
 
   return (
     <div

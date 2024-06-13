@@ -11,6 +11,7 @@ function ShopPreview() {
     queryFn: async () => {
       try {
         const Response = await axios.get(URL);
+        console.log("fetching");
         return Response.data;
       } catch (error) {
         throw new Error(error);
@@ -26,10 +27,11 @@ function ShopPreview() {
     return <div>Error fetching data + {error.message}</div>;
   }
 
+  console.log(data);
   return (
-    <div className="container text-center  overflow-hidden h-fit w-fit max-w-3xl">
-      <h1 className="font-bold text-2xl my-3">המוצרים שלנו</h1>
-      <div className=" container bg-gray-300  xxs:max-w-[350px]">
+    <div className='container text-center  overflow-hidden h-fit w-fit max-w-3xl'>
+      <h1 className='font-bold text-2xl my-3'>המוצרים שלנו</h1>
+      <div className=' container bg-gray-300  xxs:max-w-[350px]'>
         <ProductSlider items={data} />
       </div>
     </div>

@@ -7,11 +7,12 @@
  * @returns None
  */
 function sendSMSReminder(phoneNumber, name, dateTime, token) {
-  const link = `${process.env.FRONTEND}/confirmAppointment/${token}`;
+  const link = `${process.env.FRONTEND}/AppointmentConfirmation/${token}`;
   const message = `היי ${name}, רצינו להזכיר שיש לך תור לAlphamen Barbershop ${formatDate(
     dateTime
-  )} נא לאשר הגעה בקישור:${link}`;
+  )} נא לאשר הגעה בקישור`;
   console.log(message);
+  console.log(link);
 }
 /**
  * Formats a given date into a string representation in Hebrew.
